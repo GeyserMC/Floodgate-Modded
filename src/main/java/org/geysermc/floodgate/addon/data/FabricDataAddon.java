@@ -23,6 +23,10 @@ public final class FabricDataAddon implements InjectorAddon {
     private String packetHandlerName;
 
     @Inject
+    @Named("kickMessageAttribute")
+    private AttributeKey<String> kickMessageAttribute;
+
+    @Inject
     @Named("playerAttribute")
     private AttributeKey<FloodgatePlayer> playerAttribute;
 
@@ -33,7 +37,7 @@ public final class FabricDataAddon implements InjectorAddon {
 
         channel.pipeline().addBefore(
                 packetHandlerName, "floodgate_data_handler",
-                new FabricDataHandler(config, handshakeHandler, blocker, logger)
+                new FabricDataHandler(handshakeHandler, config, kickMessageAttribute, blocker)
         );
     }
 

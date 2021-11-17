@@ -1,11 +1,9 @@
 package org.geysermc.floodgate.addon.data;
 
-import static org.geysermc.floodgate.util.ReflectionUtils.getField;
-import static org.geysermc.floodgate.util.ReflectionUtils.setValue;
-
-
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
+import org.geysermc.floodgate.mixin.ClientConnectionMixin;
+import org.geysermc.floodgate.mixin.HandshakeC2SPacketMixin;
 import org.geysermc.floodgate.mixin_interface.ServerLoginNetworkHandlerSetter;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,12 +32,14 @@ public final class FabricDataHandler extends CommonDataHandler{
 
     @Override
     protected void setNewIp(Channel channel, InetSocketAddress newIp) {
-        setValue(networkManager, getField(ClientConnection.class, "address"), newIp);
+        ClientConnectionMixin networkManager = (ClientConnectionMixin) this.networkManager;
+        networkManager.setAddress(newIp);
     }
 
     @Override
     protected Object setHostname(Object handshakePacket, String hostname) {
-        setValue(handshakePacket, getField(HandshakeC2SPacket.class, "address"), hostname);
+        HandshakeC2SPacketMixin handshakeC2SPacket = (HandshakeC2SPacketMixin) handshakePacket;
+        handshakeC2SPacket.setAddress(hostname);
         return handshakePacket;
     }
 

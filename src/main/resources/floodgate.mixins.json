@@ -6,7 +6,8 @@
   "mixins": [
     "ClientConnectionMixin",
     "ServerLoginNetworkHandlerMixin",
-    "ServerNetworkIoMixin"
+    "ServerNetworkIoMixin",
+    "HandshakeC2SPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1

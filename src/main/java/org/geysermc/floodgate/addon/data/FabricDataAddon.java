@@ -37,7 +37,7 @@ public final class FabricDataAddon implements InjectorAddon {
 
         channel.pipeline().addBefore(
                 packetHandlerName, "floodgate_data_handler",
-                new FabricDataHandler(handshakeHandler, config, kickMessageAttribute, blocker)
+                new FabricDataHandler(handshakeHandler, config, kickMessageAttribute, logger, blocker)
         );
     }
 

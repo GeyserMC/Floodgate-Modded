@@ -2,6 +2,7 @@ package org.geysermc.floodgate.addon.data;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
+import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.mixin.ClientConnectionMixin;
 import org.geysermc.floodgate.mixin.HandshakeC2SPacketMixin;
 import org.geysermc.floodgate.mixin_interface.ServerLoginNetworkHandlerSetter;
@@ -22,18 +23,19 @@ public final class FabricDataHandler extends CommonDataHandler{
 
     private ClientConnection networkManager;
     private FloodgatePlayer player;
+    private FloodgateLogger logger;
 
     public FabricDataHandler(
             FloodgateHandshakeHandler handshakeHandler,
             FloodgateConfig config,
-            AttributeKey<String> kickMessageAttribute, PacketBlocker blocker){
+            AttributeKey<String> kickMessageAttribute, FloodgateLogger logger , PacketBlocker blocker){
             super(handshakeHandler, config, kickMessageAttribute, new PacketBlocker());
+            this.logger = logger;
     }
 
     @Override
     protected void setNewIp(Channel channel, InetSocketAddress newIp) {
-        ClientConnectionMixin networkManager = (ClientConnectionMixin) this.networkManager;
-        networkManager.setAddress(newIp);
+        ((ClientConnectionMixin) this.networkManager).setAddress(newIp);
     }
 
     @Override
@@ -45,18 +47,22 @@ public final class FabricDataHandler extends CommonDataHandler{
 
     @Override
     protected boolean shouldRemoveHandler(HandshakeResult result) {
-        //TODO
+        if(result.getResultType() == FloodgateHandshakeHandler.ResultType.SUCCESS){
+            player = result.getFloodgatePlayer();
+            logger.info("Floodgate player who is logged in as {} {} joined",
+                    player.getCorrectUsername(), player.getCorrectUniqueId());
+        }
+
         return true;
     }
 
     @Override
     protected boolean channelRead(Object packet){
-        //TODO
         if (packet instanceof HandshakeC2SPacket handshakePacket) {
-            
+            handle(packet, handshakePacket.getAddress());
             return false;
         }
-        return true;
+        return !checkAndHandleLogin(packet);
     }
 
     private boolean checkAndHandleLogin(Object packet) {

@@ -2,7 +2,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'java'
     id 'maven-publish'
 }
@@ -14,8 +14,8 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-minecraft {
-    accessWidener = file("src/main/resources/floodgate.accesswidener")
+loom {
+    accessWidenerPath = file("src/main/resources/floodgate.accesswidener")
 }
 
 dependencies {
@@ -39,11 +39,11 @@ dependencies {
         exclude group: 'net.kyori', module: '*' // Let Adventure-Platform provide its desired Adventure version
     }
 
-    include(modImplementation('cloud.commandframework:cloud-fabric:1.5.0') {
+    include(modImplementation('cloud.commandframework:cloud-fabric:1.6.2') {
         because "Commands library implementation for Fabric"
     })
 
-    include(modImplementation('net.kyori:adventure-platform-fabric:5.2.1') {
+    include(modImplementation('net.kyori:adventure-platform-fabric:5.3.1') {
         because "Chat library implementation for Fabric that includes methods for communicating with the server"
         // Thanks to zml for this fix
         // The package modifies Brigadier which causes a LinkageError at runtime if included
@@ -116,9 +116,8 @@ shadowJar {
 
 task remappedShadowJar(type: RemapJarTask) {
     dependsOn tasks.shadowJar
-    input = tasks.shadowJar.archivePath
+    input = tasks.shadowJar.archiveFile
     addNestedDependencies = true
-    remapAccessWidener = true // Required for our access widener changes to go into effect and not crash on startup
     archiveName = "floodgate-fabric.jar"
 }
 

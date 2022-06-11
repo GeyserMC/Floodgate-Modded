@@ -9,7 +9,6 @@ import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.platform.fabric.PlayerLocales;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserWhiteListEntry;
@@ -156,7 +155,7 @@ public final class FabricCommandUtil implements CommandUtil {
         CommandSourceStack commandSource = (CommandSourceStack) target;
         if (commandSource.getEntity() instanceof ServerPlayer) {
             SERVER.execute(() -> ((ServerPlayer) commandSource.getEntity())
-                    .displayClientMessage(new TextComponent(message), false));
+                    .displayClientMessage(Component.translatable(message), false));
         } else {
             // Console?
             logger.info(message);
@@ -193,7 +192,7 @@ public final class FabricCommandUtil implements CommandUtil {
     }
 
     public Component translateAndTransform(String locale, TranslatableMessage message, Object... args) {
-        return new TextComponent(message.translateMessage(manager, locale, args));
+        return Component.translatable(message.translateMessage(manager, locale, args));
     }
 
     public FabricServerAudiences getAdventure() {

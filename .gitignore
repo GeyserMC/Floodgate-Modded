@@ -116,3 +116,7 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+bin/main/floodgate.accesswidener
+bin/main/fabric.mod.json
+bin/main/floodgate.mixins.json
+.vscode/

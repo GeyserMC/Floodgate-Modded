@@ -39,7 +39,7 @@ dependencies {
         exclude group: 'net.kyori', module: '*' // Let Adventure-Platform provide its desired Adventure version
     }
 
-    include(modImplementation('cloud.commandframework:cloud-fabric:1.6.2') {
+    include(modImplementation('cloud.commandframework:cloud-fabric:1.5.0') {
         because "Commands library implementation for Fabric"
     })
 

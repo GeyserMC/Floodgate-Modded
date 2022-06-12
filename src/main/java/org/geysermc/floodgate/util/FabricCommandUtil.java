@@ -155,7 +155,7 @@ public final class FabricCommandUtil implements CommandUtil {
         CommandSourceStack commandSource = (CommandSourceStack) target;
         if (commandSource.getEntity() instanceof ServerPlayer) {
             SERVER.execute(() -> ((ServerPlayer) commandSource.getEntity())
-                    .displayClientMessage(Component.translatable(message), false));
+                    .displayClientMessage(Component.literal(message), false)); // TextComponent was removed in 1.19
         } else {
             // Console?
             logger.info(message);
@@ -192,7 +192,7 @@ public final class FabricCommandUtil implements CommandUtil {
     }
 
     public Component translateAndTransform(String locale, TranslatableMessage message, Object... args) {
-        return Component.translatable(message.translateMessage(manager, locale, args));
+        return Component.literal(message.translateMessage(manager, locale, args)); // TextComponent was removed in 1.19
     }
 
     public FabricServerAudiences getAdventure() {

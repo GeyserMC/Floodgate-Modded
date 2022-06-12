@@ -43,7 +43,7 @@ dependencies {
         because "Commands library implementation for Fabric"
     })
 
-    include(modImplementation('net.kyori:adventure-platform-fabric:5.3.1') {
+    include(modImplementation('net.kyori:adventure-platform-fabric:5.4.0-SNAPSHOT') {
         because "Chat library implementation for Fabric that includes methods for communicating with the server"
         // Thanks to zml for this fix
         // The package modifies Brigadier which causes a LinkageError at runtime if included
@@ -59,6 +59,12 @@ repositories {
     //mavenLocal()
     maven {
         url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+   // specifically for adventure-platform-fabric:5.4.0-SNAPSHOT
+    maven {
+        name = "sonatype-oss-snapshots1"
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+        mavenContent { snapshotsOnly() }
     }
     // Standard OpenCollab repositories
     maven {

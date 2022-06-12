@@ -16,7 +16,8 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                sh './gradlew clean build --refresh-dependencies'
+                // added --no-daemon to ensure daemon stops when not in use due to random "Gradle build daemon disappeared unexpectedly" error
+                sh './gradlew clean build --refresh-dependencies --no-daemon'
             }
             post {
                 success {

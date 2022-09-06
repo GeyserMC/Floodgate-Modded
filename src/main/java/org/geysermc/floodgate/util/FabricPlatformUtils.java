@@ -7,7 +7,11 @@ import org.geysermc.floodgate.platform.util.PlatformUtils;
 public class FabricPlatformUtils extends PlatformUtils {
     @Override
     public AuthType authType() {
-        return MinecraftServerHolder.get().usesAuthentication() ? AuthType.ONLINE : AuthType.OFFLINE;
+        if (MinecraftServerHolder.get().usesAuthentication()) {
+            return AuthType.ONLINE;
+        }
+
+        return ProxyUtils.isProxyData() ? AuthType.PROXIED : AuthType.OFFLINE;
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.floodgate.config.FloodgateConfig;
 import org.geysermc.floodgate.player.FloodgateHandshakeHandler;
 import org.geysermc.floodgate.player.FloodgateHandshakeHandler.HandshakeResult;
+import org.geysermc.floodgate.util.ProxyUtils;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
@@ -30,6 +31,7 @@ public final class FabricDataHandler extends CommonDataHandler {
     private final FloodgateLogger logger;
     private Connection networkManager;
     private FloodgatePlayer player;
+    private boolean proxyData;
 
     public FabricDataHandler(
             FloodgateHandshakeHandler handshakeHandler,
@@ -37,6 +39,7 @@ public final class FabricDataHandler extends CommonDataHandler {
             AttributeKey<String> kickMessageAttribute, FloodgateLogger logger) {
         super(handshakeHandler, config, kickMessageAttribute, new PacketBlocker());
         this.logger = logger;
+        this.proxyData = ProxyUtils.isProxyData();
     }
 
     @Override
@@ -69,8 +72,8 @@ public final class FabricDataHandler extends CommonDataHandler {
                     player.getCorrectUsername(), player.getCorrectUniqueId());
         }
 
-        // Handler will be removed after the login hello packet is handled
-        return false;
+        // If not in proxy mode, handler will be removed after the login hello packet is handled
+        return proxyData;
     }
 
     @Override

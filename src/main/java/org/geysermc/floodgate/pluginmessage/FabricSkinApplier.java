@@ -14,11 +14,30 @@ import org.geysermc.floodgate.skin.SkinData;
 
 public final class FabricSkinApplier implements SkinApplier {
 
+    private ServerPlayer getPlayer(FloodgatePlayer player) {
+        return MinecraftServerHolder.get().getPlayerList().getPlayer(player.getCorrectUniqueId());
+    }
+
+    @Override
+    public boolean hasSkin(FloodgatePlayer floodgatePlayer) {
+        ServerPlayer player = getPlayer(floodgatePlayer);
+        if (player == null) {
+            return false;
+        }
+
+        for (Property textures : player.getGameProfile().getProperties().get("textures")) {
+            if (!textures.getValue().isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void applySkin(FloodgatePlayer floodgatePlayer, SkinData skinData) {
         MinecraftServerHolder.get().execute(() -> {
-            ServerPlayer bedrockPlayer = MinecraftServerHolder.get().getPlayerList()
-                    .getPlayer(floodgatePlayer.getCorrectUniqueId());
+            ServerPlayer bedrockPlayer = getPlayer(floodgatePlayer);
             if (bedrockPlayer == null) {
                 // Disconnected probably?
                 return;

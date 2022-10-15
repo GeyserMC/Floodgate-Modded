@@ -2,6 +2,7 @@ package org.geysermc.floodgate.util;
 
 import com.mojang.authlib.GameProfile;
 import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.kyori.adventure.identity.Identity;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,7 @@ public final class FabricCommandUtil extends CommandUtil {
         this.logger = logger;
     }
 
+    @NonNull
     @Override
     public UserAudience getUserAudience(final @NonNull Object sourceObj) {
         if (!(sourceObj instanceof CommandSourceStack stack)) {
@@ -37,8 +39,9 @@ public final class FabricCommandUtil extends CommandUtil {
             return console = new UserAudience.ConsoleAudience(stack, this);
         }
         ServerPlayer player = stack.getPlayer();
-        //Locale locale = PlayerLocales.locale(player);
-        return new UserAudience.PlayerAudience(player.getUUID(), player.getGameProfile().getName(), "en_US",
+        Objects.requireNonNull(player, "No player for CommandSourceStack");
+        String locale = player.get(Identity.LOCALE).orElse(Locale.getDefault()).toLanguageTag();
+        return new UserAudience.PlayerAudience(player.getUUID(), player.getGameProfile().getName(), locale,
                 stack, this, true);
     }
 

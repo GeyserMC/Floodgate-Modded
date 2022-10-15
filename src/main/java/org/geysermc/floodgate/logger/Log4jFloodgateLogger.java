@@ -50,20 +50,6 @@ public final class Log4jFloodgateLogger implements FloodgateLogger {
     }
 
     @Override
-    public void enableDebug() {
-        if (!logger.isDebugEnabled()) {
-            Configurator.setLevel(logger.getName(), Level.DEBUG);
-        }
-    }
-
-    @Override
-    public void disableDebug() {
-        if (logger.isDebugEnabled()) {
-            Configurator.setLevel(logger.getName(), Level.INFO);
-        }
-    }
-
-    @Override
     public boolean isDebug() {
         return logger.isDebugEnabled();
     }

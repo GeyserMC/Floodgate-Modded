@@ -19,7 +19,7 @@ public class FabricMod implements ModInitializer {
                 new FabricPlatformModule()
         );
 
-        FabricPlatform platform = injector.getInstance(FabricPlatform.class);
+        FloodgatePlatform platform = injector.getInstance(FloodgatePlatform.class);
 
         platform.enable(new FabricCommandModule());
 
@@ -40,8 +40,6 @@ public class FabricMod implements ModInitializer {
                     .translatedInfo("floodgate.core.finish", endCtm - ctm);
         });
 
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
-            platform.disable();
-        });
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> platform.disable());
     }
 }

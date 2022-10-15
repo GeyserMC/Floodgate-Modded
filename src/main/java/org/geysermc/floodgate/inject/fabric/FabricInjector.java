@@ -12,8 +12,8 @@ public final class FabricInjector extends CommonPlatformInjector {
     @Getter private final boolean injected = true;
 
     @Override
-    public boolean inject() throws Exception {
-        return true;
+    public void inject() throws Exception {
+
     }
 
     public void injectClient(ChannelFuture future) {
@@ -39,8 +39,8 @@ public final class FabricInjector extends CommonPlatformInjector {
     }
 
     @Override
-    public boolean removeInjection() throws Exception {
-        return true;
+    public void removeInjection() throws Exception {
+
     }
 
     public static FabricInjector getInstance() {

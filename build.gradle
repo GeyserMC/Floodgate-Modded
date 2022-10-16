@@ -31,7 +31,7 @@ dependencies {
     // You may need to force-disable transitiveness on them.
 
     // Base Floodgate
-    implementation("org.geysermc.floodgate:core:${project.mod_version}")
+    //implementation("org.geysermc.floodgate:core:${project.mod_version}")
     shadow("org.geysermc.floodgate:core:${project.mod_version}") {
         exclude group: 'com.google.guava', module: "guava"
         exclude group: 'com.google.code.gson', module: "gson"
@@ -104,6 +104,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 shadowJar {
     configurations = [project.configurations.shadow]
+    relocate("org.bstats", "org.geysermc.floodgate.shadow.bstats")
 }
 
 task remappedShadowJar(type: RemapJarTask) {

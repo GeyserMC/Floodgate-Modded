@@ -42,7 +42,7 @@ dependencies {
         exclude group: 'it.unimi.dsi.fastutil', module: "*"
     }
 
-    implementation("org.geysermc.floodgate:api:2.2.1-20221029.103339-4")
+    shadow(implementation("org.geysermc.floodgate:api:2.2.1-20221029.103339-4"))
 
     include(modImplementation('cloud.commandframework:cloud-fabric:1.7.0-SNAPSHOT') {
         because "Commands library implementation for Fabric"

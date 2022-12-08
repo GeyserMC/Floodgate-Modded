@@ -31,14 +31,18 @@ dependencies {
     // You may need to force-disable transitiveness on them.
 
     // Base Floodgate
-    implementation("org.geysermc.floodgate:core:${project.mod_version}")
-    shadow("org.geysermc.floodgate:core:${project.mod_version}") {
+    String parentVersion = "2.2.1-20221029.103341-4"
+    implementation("org.geysermc.floodgate:core:${parentVersion}")
+    shadow("org.geysermc.floodgate:core:${parentVersion}") {
+        exclude group: "org.geysermc.floodgate", module: "api"
         exclude group: 'com.google.guava', module: "guava"
         exclude group: 'com.google.code.gson', module: "gson"
         exclude group: 'org.slf4j', module: "slf4j-api"
         exclude group: 'net.kyori', module: '*' // Let Adventure-Platform provide its desired Adventure version
         exclude group: 'it.unimi.dsi.fastutil', module: "*"
     }
+
+    implementation("org.geysermc.floodgate:api:2.2.1-20221029.103339-4")
 
     include(modImplementation('cloud.commandframework:cloud-fabric:1.7.0-SNAPSHOT') {
         because "Commands library implementation for Fabric"

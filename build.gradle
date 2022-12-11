@@ -46,6 +46,7 @@ dependencies {
     shadow(implementation("org.geysermc.floodgate:api:2.2.1-20221029.103339-4")) {
         exclude group: 'com.google.guava', module: "guava"
         exclude group: 'com.google.code.gson', module: "gson"
+        exclude group: "org.ow2.asm", module: "*"
     }
 
     include(modImplementation('cloud.commandframework:cloud-fabric:1.8.0-SNAPSHOT') {
@@ -114,7 +115,9 @@ shadowJar {
     relocate("org.bstats", "org.geysermc.floodgate.shadow.org.bstats")
 
     exclude {
-        e -> e.name.startsWith("com.google") && !e.name.startsWith("com.google.inject") // Guava and Gson
+        FileTreeElement e ->
+            e.name.startsWith("org.ow2.asm") // Comes from our Events lib
+            || (e.name.startsWith("com.google") && !e.name.startsWith("com.google.inject")) // Guava and Gson
     }
 }
 

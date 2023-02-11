@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(ClientIntentionPacket.class)
 public class ClientIntentionPacketMixin {
     @ModifyConstant(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", constant = @Constant(intValue = 255))
-    private int floodgate$modifyMaxCapacity(int defaultValue) {
+    private int floodgate$setHandshakeLength(int defaultValue) {
             return Short.MAX_VALUE;
     }
 }

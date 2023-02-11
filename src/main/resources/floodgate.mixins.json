@@ -11,6 +11,7 @@
     "ServerConnectionListenerMixin",
     "ServerLoginPacketListenerImplMixin"
   ],
+  "plugin": "org.geysermc.floodgate.util.MixinConfigPlugin",
   "injectors": {
     "defaultRequire": 1
   }

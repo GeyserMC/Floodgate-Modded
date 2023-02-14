@@ -13,7 +13,7 @@ public final class FabricInjector extends CommonPlatformInjector {
 
     @Override
     public void inject() throws Exception {
-        // no-op
+        //no-op
     }
 
     public void injectClient(ChannelFuture future) {

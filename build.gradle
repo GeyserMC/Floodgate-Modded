@@ -65,6 +65,12 @@ dependencies {
 
 repositories {
     //mavenLocal()
+
+    // temporary for custom bStats fork
+    maven {
+        url 'https://jitpack.io'
+    }
+
     maven {
         url = 'https://oss.sonatype.org/content/repositories/snapshots'
     }

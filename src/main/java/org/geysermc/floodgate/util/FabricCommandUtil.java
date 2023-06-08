@@ -71,13 +71,7 @@ public final class FabricCommandUtil extends CommandUtil {
 
     @Override
     public boolean hasPermission(Object source, String permission) {
-        CommandSourceStack commandSource = (CommandSourceStack) source;
-        if (commandSource.getEntity() != null) {
-            return Permissions.check((SharedSuggestionProvider) source, permission);
-        } else {
-            // Console?
-            return true;
-        }
+        return Permissions.check((SharedSuggestionProvider) source, permission);
     }
 
     @Override

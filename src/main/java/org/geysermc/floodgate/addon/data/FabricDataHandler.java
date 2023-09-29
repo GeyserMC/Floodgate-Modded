@@ -93,7 +93,7 @@ public final class FabricDataHandler extends CommonDataHandler {
             }
 
             // we have to fake the offline player (login) cycle
-            if (!(networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl)) {
+            if (!(networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl packetListener)) {
                 // player is not in the login state, abort
                 ctx.pipeline().remove(this);
                 return true;
@@ -102,9 +102,9 @@ public final class FabricDataHandler extends CommonDataHandler {
             GameProfile gameProfile = new GameProfile(player.getCorrectUniqueId(), player.getCorrectUsername());
 
             if (player.isLinked() && player.getCorrectUniqueId().version() == 4) {
-                verifyLinkedPlayerAsync(gameProfile);
+                verifyLinkedPlayerAsync(packetListener, gameProfile);
             } else {
-                ((ServerLoginPacketListenerImpl) networkManager.getPacketListener()).startClientVerification(gameProfile);
+                packetListener.startClientVerification(gameProfile);
             }
 
             ctx.pipeline().remove(this);
@@ -117,9 +117,10 @@ public final class FabricDataHandler extends CommonDataHandler {
      * Starts a new thread that fetches the linked player's textures,
      * and then starts client verification with the more accurate game profile.
      *
+     * @param packetListener the login packet listener for this connection
      * @param gameProfile the player's initial profile. it will NOT be mutated.
      */
-    private void verifyLinkedPlayerAsync(GameProfile gameProfile) {
+    private void verifyLinkedPlayerAsync(ServerLoginPacketListenerImpl packetListener, GameProfile gameProfile) {
         Thread texturesThread = new Thread("Bedrock Linked Player Texture Download") {
             @Override
             public void run() {
@@ -130,7 +131,7 @@ public final class FabricDataHandler extends CommonDataHandler {
                 } catch (Exception e) {
                     LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.getName(), e);
                 }
-                ((ServerLoginPacketListenerImpl) networkManager.getPacketListener()).startClientVerification(effectiveProfile);
+                packetListener.startClientVerification(effectiveProfile);
             }
         };
         texturesThread.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));

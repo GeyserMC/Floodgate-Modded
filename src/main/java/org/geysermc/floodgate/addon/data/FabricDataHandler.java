@@ -18,7 +18,6 @@ import com.mojang.authlib.GameProfile;
 import io.netty.channel.ChannelHandlerContext;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.floodgate.config.FloodgateConfig;
-import org.geysermc.floodgate.mixin.ServerLoginPacketListenerMixin;
 import org.geysermc.floodgate.player.FloodgateHandshakeHandler;
 import org.geysermc.floodgate.player.FloodgateHandshakeHandler.HandshakeResult;
 import org.slf4j.Logger;
@@ -105,7 +104,7 @@ public final class FabricDataHandler extends CommonDataHandler {
             if (player.isLinked() && player.getCorrectUniqueId().version() == 4) {
                 verifyLinkedPlayerAsync(gameProfile);
             } else {
-                ((ServerLoginPacketListenerMixin) networkManager.getPacketListener()).startClientVerification(gameProfile);
+                ((ServerLoginPacketListenerImpl) networkManager.getPacketListener()).startClientVerification(gameProfile);
             }
 
             ctx.pipeline().remove(this);
@@ -131,7 +130,7 @@ public final class FabricDataHandler extends CommonDataHandler {
                 } catch (Exception e) {
                     LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.getName(), e);
                 }
-                ((ServerLoginPacketListenerMixin) networkManager.getPacketListener()).startClientVerification(effectiveProfile);
+                ((ServerLoginPacketListenerImpl) networkManager.getPacketListener()).startClientVerification(effectiveProfile);
             }
         };
         texturesThread.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));

@@ -12,7 +12,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = "${project.mod_version}+build.${System.getenv("GITHUB_RUN_NUMBER")}" 
+version = project.mod_version
 group = project.maven_group
 
 loom {
@@ -126,6 +126,14 @@ task remappedShadowJar(type: RemapJarTask) {
     dependsOn tasks.shadowJar
     input = tasks.shadowJar.archiveFile
     addNestedDependencies = true
+    archiveName = "floodgate-fabric.jar"
+}
+
+task remappedModrinthJar(type: RemapJarTask) {
+    dependsOn tasks.shadowJar
+    input = tasks.shadowJar.archiveFile
+    addNestedDependencies = true
+    version = "${project.mod_version}+build.${System.getenv("GITHUB_RUN_NUMBER")}"
 }
 
 tasks.assemble.dependsOn tasks.remappedShadowJar
@@ -149,6 +157,8 @@ publishing {
     }
 }
 
+tasks.modrinth.dependsOn tasks.remappedModrinthJar
+
 modrinth {
     projectId = "bWrNNfkb"
     versionNumber = project.version as String + "-" + System.getenv("GITHUB_RUN_NUMBER")
@@ -157,7 +167,7 @@ modrinth {
 
     syncBodyFrom = rootProject.file("README.md").text
 
-    uploadFile = tasks.getByPath("remappedShadowJar")
+    uploadFile = tasks.getByPath("remappedModrinthJar")
     gameVersions.addAll("1.20.2")
 
     loaders = ["fabric"]

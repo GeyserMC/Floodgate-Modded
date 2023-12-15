@@ -147,6 +147,7 @@ publishing {
 tasks.modrinth.dependsOn tasks.remappedModrinthJar
 
 modrinth {
+    token = System.getenv('MODRINTH_TOKEN') // Prevent GitHub Actions from caching empty Modrinth token
     projectId = "bWrNNfkb"
     versionNumber = project.version as String + "-" + System.getenv("GITHUB_RUN_NUMBER")
     versionType = "beta"
@@ -155,7 +156,7 @@ modrinth {
     syncBodyFrom = rootProject.file("README.md").text
 
     uploadFile = tasks.getByPath("remappedModrinthJar")
-    gameVersions.addAll("1.20.4")
+    gameVersions.addAll("1.20.2", "1.20.4")
 
     loaders = ["fabric"]
 

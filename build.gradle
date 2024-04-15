@@ -1,17 +1,13 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'java'
     id 'maven-publish'
     id "com.modrinth.minotaur" version "2.+"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
@@ -27,9 +23,6 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
 
     // Base Floodgate
     implementation("org.geysermc.floodgate:core:${project.mod_version}")
@@ -48,9 +41,18 @@ dependencies {
         exclude group: "org.ow2.asm", module: "*" // From Events lib
     }
 
-    include(modImplementation('cloud.commandframework:cloud-fabric:1.8.4') {
-        because "Commands library implementation for Fabric"
-    })
+    // TODO: include cloud once we switch to 2.0
+    modImplementation('cloud.commandframework:cloud-fabric:1.8.4') { transitive = false }
+    shadow('cloud.commandframework:cloud-fabric:1.8.4') { transitive = false }
+    implementation('cloud.commandframework:cloud-core:1.8.4') { transitive = false }
+    shadow('cloud.commandframework:cloud-core:1.8.4') { transitive = false }
+    implementation('cloud.commandframework:cloud-brigadier:1.8.4') { transitive = false }
+    shadow('cloud.commandframework:cloud-brigadier:1.8.4') { transitive = false }
+    implementation('cloud.commandframework:cloud-services:1.8.4') { transitive = false }
+    shadow('cloud.commandframework:cloud-services:1.8.4') { transitive = false }
+
+    include(modImplementation('me.lucko:fabric-permissions-api:0.2-SNAPSHOT'))
+
 
     // Lombok
     compileOnly "org.projectlombok:lombok:${project.lombok_version}"
@@ -70,13 +72,8 @@ repositories {
     }
     // Standard OpenCollab repositories
     maven {
-        name = 'opencollab-release-repo'
-        url = 'https://repo.opencollab.dev/maven-releases/'
-        //TODO set as releases
-    }
-    maven {
-        name = 'opencollab-snapshot-repo'
-        url = 'https://repo.opencollab.dev/maven-snapshots/'
+        name = 'opencollab-repo'
+        url = 'https://repo.opencollab.dev/main/'
     }
 }
 
@@ -107,33 +104,38 @@ shadowJar {
     // TODO this is temporary until Floodgate's dev branch is merged
     relocate("com.google.inject", "org.geysermc.floodgate.shadow.guice")
     relocate("org.bstats", "org.geysermc.floodgate.shadow.bstats")
+    relocate("cloud.commandframework", "org.geysermc.floodgate.shadow.cloud")
     relocate("org.yaml.snakeyaml", "org.geysermc.floodgate.shadow.snakeyaml") //relocate snakeyaml to avoid conflicts with other mods
     exclude([
-            'cloud/**',
             'com/google/common/**', 'com/google/errorprone/**', 'com/google/gson/**', 'com/google/j2objc/**', 'com/google/thirdparty/**',
             'it/unimi/**',
-            'org/slf4j/**'
+            'org/slf4j/**',
+            'org/objectweb/asm/**',
+            'org/checkerframework/**',
+            'jdk/internal/shellsupport/**',
+            'edu/umd/cs/findbugs/**'
     ])
 }
 
-task remappedShadowJar(type: RemapJarTask) {
+remapJar {
     dependsOn tasks.shadowJar
+    mustRunAfter tasks.shadowJar
     input = tasks.shadowJar.archiveFile
     addNestedDependencies = true
-    archiveName = "floodgate-fabric.jar"
+    archiveFileName.set("floodgate-fabric.jar")
 }
 
-task remappedModrinthJar(type: RemapJarTask) {
-    dependsOn tasks.shadowJar
-    input = tasks.shadowJar.archiveFile
+tasks.register('remappedModrinthJar', RemapJarTask) {
+    dependsOn tasks.remapJar
+    input = tasks.remapJar.archiveFile
     addNestedDependencies = true
-    version = "${project.mod_version}+build.${System.getenv("GITHUB_RUN_NUMBER")}"
+    setArchiveVersion("${project.mod_version}+build.${System.getenv("GITHUB_RUN_NUMBER")}")
 }
 
-tasks.assemble.dependsOn tasks.remappedShadowJar
+tasks.assemble.dependsOn tasks.remapJar
 
 artifacts {
-    archives remappedShadowJar
+    archives remapJar
     shadow shadowJar
 }
 
@@ -162,7 +164,7 @@ modrinth {
 
     syncBodyFrom = rootProject.file("README.md").text
 
-    uploadFile = tasks.getByPath("remappedModrinthJar")
+    uploadFile = tasks.named("remappedModrinthJar")
     gameVersions.addAll("1.20.2", "1.20.4")
 
     loaders = ["fabric"]

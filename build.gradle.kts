@@ -29,8 +29,8 @@ dependencies {
     // Requires relocation
     shadow("org.bstats:bstats-base:3.0.2")
 
-    // Shadow these since the (indirectly) depend on quite old dependencies
-    shadow("com.google.inject:guice:5.1.0") { isTransitive = false }
+    // Shadow & relocate these since the (indirectly) depend on quite old dependencies
+    shadow("com.google.inject:guice:6.0.0") { isTransitive = false }
     shadow("org.geysermc.configutils:configutils:1.0-SNAPSHOT") {
         exclude("org.checkerframework")
         exclude("com.google.errorprone")
@@ -40,24 +40,26 @@ dependencies {
 
     include("aopalliance:aopalliance:1.0")
     include("javax.inject:javax.inject:1")
+    include("jakarta.inject:jakarta.inject-api:2.0.1")
     include("org.java-websocket:Java-WebSocket:1.5.2")
 
     // Just like Geyser, include these
     include("org.geysermc.geyser", "common", "2.2.3-SNAPSHOT")
     include("org.geysermc.cumulus", "cumulus", "1.1.2")
     include("org.geysermc.event", "events", "1.1-SNAPSHOT")
+    include("org.lanternpowered", "lmbda", "2.0.0") // used in events
 
     // cloud
     include("org.incendo:cloud-fabric:2.0.0-beta.4")
     modImplementation("org.incendo:cloud-fabric:2.0.0-beta.4")
 
     // Lombok
-    compileOnly("org.projectlombok:lombok:1.18.20")
-    annotationProcessor("org.projectlombok:lombok:1.18.20")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 repositories {
-    mavenLocal()
+    // mavenLocal()
     mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")

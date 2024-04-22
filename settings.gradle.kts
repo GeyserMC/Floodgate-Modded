@@ -1,6 +1,6 @@
 pluginManagement {
     repositories {
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.fabricmc.net/")

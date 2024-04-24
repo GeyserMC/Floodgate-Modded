@@ -14,17 +14,17 @@ loom {
 
 dependencies {
     //to change the versions see the gradle.properties file
-    minecraft("com.mojang:minecraft:1.20.4")
+    minecraft("com.mojang:minecraft:1.20.5")
     mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:0.15.2")
+    modImplementation("net.fabricmc:fabric-loader:0.15.10")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.91.2+1.20.4")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.97.6+1.20.5")
 
     // Base Floodgate
-    implementation("org.geysermc.floodgate:core:2.2.3-SNAPSHOT")
-    shadow("org.geysermc.floodgate:core:2.2.3-SNAPSHOT") { isTransitive = false }
-    shadow("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
+    implementation("org.geysermc.floodgate:core:cloud2-2.2.3-SNAPSHOT")
+    shadow("org.geysermc.floodgate:core:cloud2-2.2.3-SNAPSHOT") { isTransitive = false }
+    shadow("org.geysermc.floodgate:api:cloud2-2.2.3-SNAPSHOT") { isTransitive = false }
 
     // Requires relocation
     shadow("org.bstats:bstats-base:3.0.2")
@@ -50,8 +50,8 @@ dependencies {
     include("org.lanternpowered", "lmbda", "2.0.0") // used in events
 
     // cloud
-    include("org.incendo:cloud-fabric:2.0.0-beta.4")
-    modImplementation("org.incendo:cloud-fabric:2.0.0-beta.4")
+    include("org.incendo:cloud-fabric:2.0.1-SNAPSHOT")
+    modImplementation("org.incendo:cloud-fabric:2.0.1-SNAPSHOT")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.32")
@@ -59,7 +59,7 @@ dependencies {
 }
 
 repositories {
-    // mavenLocal()
+    mavenLocal()
     mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")

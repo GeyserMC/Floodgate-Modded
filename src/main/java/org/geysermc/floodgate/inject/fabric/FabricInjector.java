@@ -23,7 +23,7 @@ public final class FabricInjector extends CommonPlatformInjector {
                 super.channelRead(ctx, msg);
 
                 Channel channel = (Channel) msg;
-                channel.pipeline().addLast(new ChannelInitializer<Channel>() {
+                channel.pipeline().addLast(new ChannelInitializer<>() {
                     @Override
                     protected void initChannel(Channel channel) {
                         injectAddonsCall(channel, false);

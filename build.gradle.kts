@@ -21,13 +21,10 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.97.6+1.20.5")
 
-    // Base Floodgate TODO change to non-jitpacked version once <https://github.com/GeyserMC/Floodgate/pull/496> is merged
-//    implementation("org.geysermc.floodgate:core:2.2.3-SNAPSHOT")
-//    shadow("org.geysermc.floodgate:core:2.2.3-SNAPSHOT") { isTransitive = false }
-//    shadow("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
-    implementation("com.github.onebeastchris.floodgate:core:e2c2a98")
-    shadow("com.github.onebeastchris.floodgate:core:e2c2a98") { isTransitive = false }
-    shadow("com.github.onebeastchris.floodgate:api:e2c2a98") { isTransitive = false }
+    // Base Floodgate
+    implementation("org.geysermc.floodgate:core:2.2.3-SNAPSHOT")
+    shadow("org.geysermc.floodgate:core:2.2.3-SNAPSHOT") { isTransitive = false }
+    shadow("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
 
     // Requires relocation
     shadow("org.bstats:bstats-base:3.0.2")
@@ -53,8 +50,8 @@ dependencies {
     include("org.lanternpowered", "lmbda", "2.0.0") // used in events
 
     // cloud
-    include("org.incendo:cloud-fabric:2.0.0-beta.5")
-    modImplementation("org.incendo:cloud-fabric:2.0.0-beta.5")
+    include("org.incendo:cloud-fabric:2.0.0-SNAPSHOT")
+    modImplementation("org.incendo:cloud-fabric:2.0.0-SNAPSHOT")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.32")

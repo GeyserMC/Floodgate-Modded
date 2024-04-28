@@ -73,10 +73,8 @@ public final class FabricCommandUtil extends CommandUtil {
 
     @Override
     public boolean hasPermission(Object source, String permission) {
-        if (source instanceof CommandSourceStack sourceStack && !sourceStack.isPlayer()) {
-            return true;
-        }
-        return Permissions.check((SharedSuggestionProvider) source, permission);
+        return Permissions.check((SharedSuggestionProvider) source,
+                permission, MinecraftServerHolder.get().getOperatorUserPermissionLevel());
     }
 
     @Override

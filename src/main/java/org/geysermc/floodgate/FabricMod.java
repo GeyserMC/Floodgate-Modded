@@ -49,14 +49,12 @@ public class FabricMod implements ModInitializer {
                     .translatedInfo("floodgate.core.finish", endCtm - ctm);
         });
 
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
-            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-                platform.disable();
-            }
-        });
-
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             ClientLifecycleEvents.CLIENT_STOPPING.register(($) -> {
+                platform.disable();
+            });
+        } else {
+            ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
                 platform.disable();
             });
         }

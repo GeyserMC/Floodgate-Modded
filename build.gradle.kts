@@ -45,12 +45,16 @@ dependencies {
 
     // Just like Geyser, include these
     include("org.geysermc.geyser", "common", "2.2.3-SNAPSHOT")
+    implementation("org.geysermc.geyser", "common", "2.2.3-SNAPSHOT")
     include("org.geysermc.cumulus", "cumulus", "1.1.2")
     include("org.geysermc.event", "events", "1.1-SNAPSHOT")
     include("org.lanternpowered", "lmbda", "2.0.0") // used in events
 
     // Geyser dependency for the fun injector mixin :)))
-    modImplementation("org.geysermc.geyser:fabric:2.2.3-SNAPSHOT")
+    modCompileOnly("org.geysermc.geyser:fabric:2.2.3-SNAPSHOT") {
+        exclude(group = "io.netty")
+        exclude(group = "io.netty.incubator")
+    }
 
     // cloud
     include("org.incendo:cloud-fabric:2.0.0-SNAPSHOT")
@@ -62,7 +66,7 @@ dependencies {
 }
 
 repositories {
-    //mavenLocal()
+    mavenLocal()
     mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")

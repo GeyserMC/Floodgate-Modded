@@ -12,6 +12,13 @@ dependencies {
     api(libs.floodgate.api)
     api(libs.guice)
 
+    compileOnly(libs.mixin)
+    compileOnly(libs.asm)
+    modCompileOnly(libs.geyser.mod) {
+        exclude(group = "io.netty")
+        exclude(group = "io.netty.incubator")
+    }
+
     // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
     compileOnly(libs.fabric.loader)
 }

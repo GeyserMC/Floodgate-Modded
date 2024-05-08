@@ -9,12 +9,14 @@ import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import org.geysermc.floodgate.FloodgateMod;
+import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 
 @Mod("floodgate")
 public class NeoForgeMod extends FloodgateMod {
 
     public NeoForgeMod() {
-        this.init(FMLPaths.CONFIGDIR.get().resolve("floodgate"));
+        this.init(new NeoForgePlatformModule(),
+                FMLPaths.CONFIGDIR.get().resolve("floodgate"));
 
         NeoForge.EVENT_BUS.addListener(this::onServerStarted);
         if (FMLLoader.getDist().isClient()) {

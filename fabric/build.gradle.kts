@@ -28,11 +28,7 @@ dependencies {
     }
 
     api(libs.floodgate.core)
-    api(libs.floodgate.api)
     api(libs.guice)
-
-    // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
-    modImplementation(libs.fabric.loader)
 
     modImplementation(libs.cloud.fabric)
     include(libs.cloud.fabric)

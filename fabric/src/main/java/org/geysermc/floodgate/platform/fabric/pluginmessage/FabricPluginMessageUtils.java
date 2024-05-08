@@ -1,16 +1,9 @@
 package org.geysermc.floodgate.platform.fabric.pluginmessage;
 
-import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.geysermc.floodgate.MinecraftServerHolder;
-import org.geysermc.floodgate.api.FloodgateApi;
-import org.geysermc.floodgate.api.InstanceHolder;
 import org.geysermc.floodgate.platform.pluginmessage.PluginMessageUtils;
 import org.geysermc.floodgate.pluginmessage.payloads.FormPayload;
 import org.geysermc.floodgate.pluginmessage.payloads.PacketPayload;

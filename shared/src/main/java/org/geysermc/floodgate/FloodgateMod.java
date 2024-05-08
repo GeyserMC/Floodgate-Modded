@@ -1,6 +1,8 @@
 package org.geysermc.floodgate;
 
 import com.google.inject.Module;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
 import org.geysermc.floodgate.inject.ModInjector;
 import com.google.inject.Guice;
@@ -8,6 +10,8 @@ import com.google.inject.Injector;
 import net.fabricmc.loader.api.FabricLoader;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.module.*;
+import org.geysermc.floodgate.player.UserAudience;
+import org.incendo.cloud.CommandManager;
 
 import java.nio.file.Path;
 
@@ -17,12 +21,15 @@ public abstract class FloodgateMod {
     private FloodgatePlatform platform;
     private Injector injector;
 
-    protected void init(Path dataDirectory) {
+    @Getter @Setter
+    private static CommandManager<UserAudience> commandManager;
+
+    protected void init(ModPlatformModule module, Path dataDirectory) {
         ModInjector.setInstance(new ModInjector());
 
         injector = Guice.createInjector(
                 new ServerCommonModule(dataDirectory),
-                new ModPlatformModule()
+                module
         );
 
         platform = injector.getInstance(FloodgatePlatform.class);

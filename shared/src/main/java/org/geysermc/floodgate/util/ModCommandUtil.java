@@ -1,14 +1,12 @@
 package org.geysermc.floodgate.util;
 
 import com.mojang.authlib.GameProfile;
-import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserWhiteListEntry;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.geysermc.floodgate.FloodgateMod;
 import org.geysermc.floodgate.MinecraftServerHolder;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
@@ -16,13 +14,12 @@ import org.geysermc.floodgate.platform.command.CommandUtil;
 import org.geysermc.floodgate.player.UserAudience;
 
 import java.util.*;
-import java.util.logging.Logger;
 
-public final class FabricCommandUtil extends CommandUtil {
+public final class ModCommandUtil extends CommandUtil {
     private final FloodgateLogger logger;
     private UserAudience console;
 
-    public FabricCommandUtil(LanguageManager manager, FloodgateApi api, FloodgateLogger logger) {
+    public ModCommandUtil(LanguageManager manager, FloodgateApi api, FloodgateLogger logger) {
         super(manager, api);
         this.logger = logger;
     }
@@ -73,8 +70,9 @@ public final class FabricCommandUtil extends CommandUtil {
 
     @Override
     public boolean hasPermission(Object source, String permission) {
-        return Permissions.check((SharedSuggestionProvider) source,
-                permission, MinecraftServerHolder.get().getOperatorUserPermissionLevel());
+        return FloodgateMod.getCommandManager().hasPermission(
+                getUserAudience(source), permission
+        );
     }
 
     @Override

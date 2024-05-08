@@ -4,7 +4,7 @@ import net.minecraft.SharedConstants;
 import org.geysermc.floodgate.MinecraftServerHolder;
 import org.geysermc.floodgate.platform.util.PlatformUtils;
 
-public class FabricPlatformUtils extends PlatformUtils {
+public class ModPlatformUtils extends PlatformUtils {
     @Override
     public AuthType authType() {
         return MinecraftServerHolder.get().usesAuthentication() ? AuthType.ONLINE : AuthType.OFFLINE;

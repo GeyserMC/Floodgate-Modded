@@ -7,12 +7,14 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.geysermc.floodgate.platform.fabric.module.FabricCommandModule;
+import org.geysermc.floodgate.platform.fabric.module.FabricPlatformModule;
 
 public abstract class FabricMod extends FloodgateMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        this.init(FabricLoader.getInstance().getConfigDir().resolve("floodgate"));
+        this.init(new FabricPlatformModule(),
+                FabricLoader.getInstance().getConfigDir().resolve("floodgate"));
         this.enableCommandModule(new FabricCommandModule());
 
         ServerLifecycleEvents.SERVER_STARTED.register(this::enable);

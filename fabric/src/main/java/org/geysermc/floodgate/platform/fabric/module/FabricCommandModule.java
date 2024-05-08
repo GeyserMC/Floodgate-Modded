@@ -4,7 +4,9 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import lombok.SneakyThrows;
 import net.minecraft.commands.CommandSourceStack;
+import org.geysermc.floodgate.FloodgateMod;
 import org.geysermc.floodgate.module.CommandModule;
+import org.geysermc.floodgate.module.ModPlatformModule;
 import org.geysermc.floodgate.platform.command.CommandUtil;
 import org.geysermc.floodgate.player.FloodgateCommandPreprocessor;
 import org.geysermc.floodgate.player.UserAudience;
@@ -24,6 +26,7 @@ public final class FabricCommandModule extends CommandModule {
                 new FloodgateSenderMapper<>(commandUtil)
         );
         commandManager.registerCommandPreProcessor(new FloodgateCommandPreprocessor<>(commandUtil));
+        FloodgateMod.setCommandManager(commandManager);
         return commandManager;
     }
 

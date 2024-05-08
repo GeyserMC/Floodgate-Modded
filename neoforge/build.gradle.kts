@@ -22,12 +22,12 @@ dependencies {
         }
     }
 
-    common(project(":shared", configuration = "namedElements")) { isTransitive = false }
     neoForge(libs.neoforge)
+    common(project(":shared", configuration = "namedElements")) { isTransitive = false }
+    shadow(project(path = ":shared", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
-    api(libs.floodgate.core)
-    api(libs.floodgate.api)
-    api(libs.guice)
+    implementation(libs.floodgate.core)
+    implementation(libs.guice)
 
     modImplementation(libs.cloud.neoforge)
     include(libs.cloud.neoforge)
@@ -37,12 +37,11 @@ dependencies {
 //        exclude(group = "io.netty.incubator")
 //    }
 
-    shadow(project(path = ":shared", configuration = "transformProductionNeoForge")) { isTransitive = false }
 }
 
 tasks {
     processResources {
-        from(project(":common").file("src/main/resources/***.accesswidener")) {
+        from(project(":shared").file("src/main/resources/floodgate.accesswidener")) {
             into("/assets/")
         }
     }

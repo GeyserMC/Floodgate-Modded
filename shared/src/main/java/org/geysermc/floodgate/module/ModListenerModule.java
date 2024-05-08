@@ -15,7 +15,7 @@ public final class ModListenerModule extends AbstractModule {
 
     @Singleton
     @ProvidesIntoSet
-    public ModEventListener fabricEventListener() {
+    public ModEventListener modEventListener() {
         return new ModEventListener();
     }
 }

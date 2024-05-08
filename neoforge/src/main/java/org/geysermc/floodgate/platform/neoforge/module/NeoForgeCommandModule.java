@@ -3,6 +3,7 @@ package org.geysermc.floodgate.platform.neoforge.module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import lombok.SneakyThrows;
+import org.geysermc.floodgate.FloodgateMod;
 import org.geysermc.floodgate.module.CommandModule;
 import org.geysermc.floodgate.platform.command.CommandUtil;
 import org.geysermc.floodgate.player.FloodgateCommandPreprocessor;
@@ -22,6 +23,7 @@ public class NeoForgeCommandModule extends CommandModule {
                 new FloodgateSenderMapper<>(commandUtil)
         );
         commandManager.registerCommandPreProcessor(new FloodgateCommandPreprocessor<>(commandUtil));
+        FloodgateMod.setCommandManager(commandManager);
         return commandManager;
     }
 }

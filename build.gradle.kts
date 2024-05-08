@@ -45,7 +45,6 @@ dependencies {
 
     // Just like Geyser, include these
     include("org.geysermc.geyser", "common", "2.2.3-SNAPSHOT")
-    implementation("org.geysermc.geyser", "common", "2.2.3-SNAPSHOT")
     include("org.geysermc.cumulus", "cumulus", "1.1.2")
     include("org.geysermc.event", "events", "1.1-SNAPSHOT")
     include("org.lanternpowered", "lmbda", "2.0.0") // used in events
@@ -66,7 +65,7 @@ dependencies {
 }
 
 repositories {
-    mavenLocal()
+    // mavenLocal()
     mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")

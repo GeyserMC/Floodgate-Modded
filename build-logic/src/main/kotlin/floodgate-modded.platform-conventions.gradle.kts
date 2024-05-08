@@ -28,6 +28,28 @@ configurations {
     create("includeTransitive").isTransitive = true
 }
 
+dependencies {
+    minecraft(libs.minecraft)
+    mappings(loom.officialMojangMappings())
+
+    // These are under our own namespace
+    shadow(libs.floodgate.api) { isTransitive = false }
+    shadow(libs.floodgate.core) { isTransitive = false }
+
+    // Requires relocation
+    shadow(libs.bstats) { isTransitive = false }
+
+    // Shadow & relocate these since the (indirectly) depend on quite old dependencies
+    shadow(libs.guice) { isTransitive = false }
+    shadow(libs.configutils) {
+        exclude("org.checkerframework")
+        exclude("com.google.errorprone")
+        exclude("com.github.spotbugs")
+        exclude("com.nukkitx.fastutil")
+    }
+
+}
+
 tasks {
     processResources {
         filesMatching(listOf("floodgate.mixins.json")) {
@@ -87,28 +109,6 @@ afterEvaluate {
             println("Not including ${dep.id} for ${project.name}!")
         }
     }
-}
-
-dependencies {
-    minecraft("com.mojang:minecraft:1.20.6")
-    mappings(loom.officialMojangMappings())
-
-    // These are under our own namespace
-    shadow(libs.floodgate.api)
-    shadow(libs.floodgate.core)
-
-    // Requires relocation
-    shadow(libs.bstats)
-
-    // Shadow & relocate these since the (indirectly) depend on quite old dependencies
-    shadow(libs.guice) { isTransitive = false }
-    shadow(libs.configutils) {
-        exclude("org.checkerframework")
-        exclude("com.google.errorprone")
-        exclude("com.github.spotbugs")
-        exclude("com.nukkitx.fastutil")
-    }
-
 }
 
 modrinth {

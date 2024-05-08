@@ -27,6 +27,8 @@ dependencies {
         isTransitive = false
     }
 
+    includeTransitive(libs.floodgate.core)
+
     api(libs.floodgate.core)
     api(libs.guice)
 

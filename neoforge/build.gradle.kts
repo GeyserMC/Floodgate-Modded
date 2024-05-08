@@ -26,6 +26,8 @@ dependencies {
     common(project(":shared", configuration = "namedElements")) { isTransitive = false }
     shadow(project(path = ":shared", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
+    includeTransitive(libs.floodgate.core)
+
     implementation(libs.floodgate.core)
     implementation(libs.guice)
 
@@ -48,7 +50,7 @@ tasks {
 
     remapJar {
         dependsOn(processResources)
-        atAccessWideners.add("***.accesswidener")
+        atAccessWideners.add("floodgate.accesswidener")
         archiveBaseName.set("floodgate-neoforge")
     }
 }

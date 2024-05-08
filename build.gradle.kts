@@ -50,10 +50,7 @@ dependencies {
     include("org.lanternpowered", "lmbda", "2.0.0") // used in events
 
     // Geyser dependency for the fun injector mixin :)))
-    modCompileOnly("org.geysermc.geyser:fabric:2.2.3-SNAPSHOT") {
-        exclude(group = "io.netty")
-        exclude(group = "io.netty.incubator")
-    }
+    modCompileOnly("org.geysermc.geyser:fabric:2.2.3-SNAPSHOT") { isTransitive = false }
 
     // cloud
     include("org.incendo:cloud-fabric:2.0.0-SNAPSHOT")

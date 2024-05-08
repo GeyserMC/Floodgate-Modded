@@ -11,7 +11,7 @@
     "GeyserModInjectorMixin",
     "ServerConnectionListenerMixin"
   ],
-  "plugin": "org.geysermc.floodgate.platform.$name.util.MixinConfigPlugin",
+  "plugin": "${plugin}",
   "injectors": {
     "defaultRequire": 1
   }

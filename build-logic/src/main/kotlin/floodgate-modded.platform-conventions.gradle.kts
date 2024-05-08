@@ -9,12 +9,17 @@ plugins {
 
 // These are all provided by Minecraft - don't include these.
 provided("com.google.code.gson", "gson")
-provided("com.nukkitx.fastutil", "fastutil-common")
-provided("com.nukkitx.fastutil", "fastutil-int-common")
-provided("com.nukkitx.fastutil", "fastutil-int-object-maps")
-provided("com.nukkitx.fastutil", "fastutil-int-sets")
-provided("com.nukkitx.fastutil", "fastutil-object-common")
-provided("com.nukkitx.fastutil", "fastutil-object-sets")
+provided("org.slf4j", ".*")
+provided("com.nukkitx.fastutil", ".*")
+provided("org.incendo", ".*") // technically not provided, but jij'd by cloud-fabric/-neoforge
+
+// these we just don't want to include
+provided("org.checkerframework", ".*")
+provided("com.google.errorprone", ".*")
+provided("com.github.spotbugs", "spotbugs-annotations")
+provided("com.google.guava", "guava")
+provided("com.google.code.findbugs", ".*")
+provided("org.ow2.asm", "asm")
 
 architectury {
     minecraft = libs.versions.minecraft.version.get()
@@ -53,7 +58,7 @@ dependencies {
 tasks {
     processResources {
         filesMatching(listOf("floodgate.mixins.json")) {
-            expand("name" to project.name)
+            expand("plugin" to "org.geysermc.floodgate.platform.${project.name}.util.MixinConfigPlugin")
         }
     }
 
@@ -95,9 +100,10 @@ afterEvaluate {
     val providedDependencies = getProvidedDependenciesForProject(project.name)
 
     // These are shaded, no need to JiJ them
-    configurations["shadow"].dependencies.forEach {shadowed ->
-        println("Not including shadowed dependency: ${shadowed.group}:${shadowed.name}")
-        providedDependencies.add("${shadowed.group}:${shadowed.name}")
+    configurations["shadow"].resolvedConfiguration.resolvedArtifacts.forEach {shadowed ->
+        val string = "${shadowed.moduleVersion.id.group}:${shadowed.moduleVersion.id.name}"
+        println("Not including shadowed dependency: $string")
+        providedDependencies.add(string)
     }
 
     configurations["includeTransitive"].resolvedConfiguration.resolvedArtifacts.forEach { dep ->

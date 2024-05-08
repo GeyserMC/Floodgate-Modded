@@ -22,7 +22,7 @@ indra {
 
 tasks {
     processResources {
-        filesMatching(listOf("fabric.mod.json", "floodgate.mixins.json", "META-INF/neoforge.mods.toml")) {
+        filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml")) {
             expand(
                 "id" to "floodgate",
                 "name" to "Floodgate",

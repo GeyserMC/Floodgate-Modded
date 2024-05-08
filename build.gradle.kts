@@ -22,9 +22,9 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.97.6+1.20.5")
 
     // Base Floodgate
-    implementation("org.geysermc.floodgate:core:2.2.3-SNAPSHOT")
-    shadow("org.geysermc.floodgate:core:2.2.3-SNAPSHOT") { isTransitive = false }
-    shadow("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
+    implementation("org.geysermc.floodgate:core:2.2.3-20240508.151752-4")
+    shadow("org.geysermc.floodgate:core:2.2.3-20240508.151752-4") { isTransitive = false }
+    shadow("org.geysermc.floodgate:api:2.2.3-20240508.151752-4") { isTransitive = false }
 
     // Requires relocation
     shadow("org.bstats:bstats-base:3.0.2")

@@ -1,15 +1,14 @@
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
     id("floodgate-modded.publish-conventions")
-    id("java-library")
     id("architectury-plugin")
     id("dev.architectury.loom")
+    id("com.modrinth.minotaur")
 }
 
-// These are provided by Minecraft already, no need to include em
-provided("com.google.code.gson", "gson")
-
 architectury {
-    minecraft = "1.20.5"
+    minecraft = "1.20.6"
 }
 
 loom {
@@ -65,7 +64,7 @@ afterEvaluate {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:1.20.5")
+    minecraft("com.mojang:minecraft:1.20.6")
     mappings(loom.officialMojangMappings())
 }
 

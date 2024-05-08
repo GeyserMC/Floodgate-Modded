@@ -2,10 +2,10 @@
 geyser = "2.2.3-SNAPSHOT"
 floodgate = "2.2.3-SNAPSHOT"
 indra = "3.1.3"
-shadow = "8.1.1-SNAPSHOT"
+shadow = "8.1.1"
 architectury-plugin = "3.4-SNAPSHOT"
 architectury-loom = "1.6-SNAPSHOT"
-minecraft-version = "1.20.5"
+minecraft-version = "1.20.6"
 minotaur = "2.+"
 guice = "6.0.0"
 javax = "1"
@@ -14,7 +14,7 @@ jakarta = "2.0.1"
 websocket = "1.5.2"
 lmbda = "2.0.0"
 cloud = "2.0.0-SNAPSHOT"
-lombok = "1.18.32"
+lombok = "8.6"
 bstats = "3.0.2"
 configutils = "1.0-SNAPSHOT"
 events = "1.1-SNAPSHOT"
@@ -25,7 +25,7 @@ fabric-loader = "0.15.10"
 fabric-api = "0.97.6+1.20.5"
 
 # neoforge
-neoforge-version = "20.4.48-beta"
+neoforge-version = "20.6.43-beta"
 
 [libraries]
 floodgate-core = { group = "org.geysermc.floodgate", name = "core", version.ref = "floodgate" }
@@ -49,7 +49,7 @@ websocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref
 cloud-fabric = { group = "org.incendo", name = "cloud-fabric", version.ref = "cloud" }
 cloud-neoforge = { group = "org.incendo", name = "cloud-neoforge", version.ref = "cloud" }
 lmbda = { group = "org.lanternpowered", name = "lmbda", version.ref = "lmbda" }
-lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+minotaur = { group = "com.modrinth.minotaur", name = "Minotaur", version.ref = "minotaur" }
 
 # Fabric
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
@@ -57,3 +57,7 @@ fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.r
 
 # NeoForge
 neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge-version" }
+
+[plugins]
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+indra = { id = "net.kyori.indra", version.ref = "indra" }

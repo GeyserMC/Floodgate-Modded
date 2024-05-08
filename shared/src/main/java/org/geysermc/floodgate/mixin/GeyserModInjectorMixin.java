@@ -1,7 +1,7 @@
 package org.geysermc.floodgate.mixin;
 
 import io.netty.channel.ChannelFuture;
-import org.geysermc.floodgate.inject.fabric.ModInjector;
+import org.geysermc.floodgate.inject.ModInjector;
 import org.geysermc.geyser.GeyserBootstrap;
 import org.geysermc.geyser.platform.mod.GeyserModInjector;
 import org.spongepowered.asm.mixin.Mixin;

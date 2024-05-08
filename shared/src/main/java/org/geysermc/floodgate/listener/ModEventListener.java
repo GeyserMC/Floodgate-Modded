@@ -1,21 +1,20 @@
 package org.geysermc.floodgate.listener;
 
 import com.google.inject.Inject;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.floodgate.util.LanguageManager;
+
+import java.util.UUID;
 
 public final class ModEventListener {
     @Inject private FloodgateApi api;
     @Inject private FloodgateLogger logger;
     @Inject private LanguageManager languageManager;
 
-    public void onPlayerJoin(ServerGamePacketListenerImpl networkHandler, PacketSender packetSender, MinecraftServer server) {
-        FloodgatePlayer player = api.getPlayer(networkHandler.player.getUUID());
+    public void onPlayerJoin(UUID uuid) {
+        FloodgatePlayer player = api.getPlayer(uuid);
         if (player != null) {
             logger.translatedInfo(
                     "floodgate.ingame.login_name",

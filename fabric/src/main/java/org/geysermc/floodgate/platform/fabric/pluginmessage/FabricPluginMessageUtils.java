@@ -1,4 +1,4 @@
-package org.geysermc.floodgate.pluginmessage;
+package org.geysermc.floodgate.platform.fabric.pluginmessage;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;

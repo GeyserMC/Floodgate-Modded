@@ -1,7 +1,9 @@
-package org.geysermc.floodgate.pluginmessage;
+package org.geysermc.floodgate.platform.fabric.pluginmessage;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import org.geysermc.floodgate.pluginmessage.PluginMessageChannel;
+import org.geysermc.floodgate.pluginmessage.PluginMessageRegistration;
 import org.geysermc.floodgate.pluginmessage.payloads.FormPayload;
 import org.geysermc.floodgate.pluginmessage.payloads.PacketPayload;
 import org.geysermc.floodgate.pluginmessage.payloads.SkinPayload;

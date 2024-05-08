@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "floodgate",
   "version": "${version}",
-  "name": "Floodgate-Fabric",
+  "name": "Floodgate",
   "description": "",
   "authors": [
     "GeyserMC"
@@ -12,11 +12,10 @@
     "repo": "https://github.com/GeyserMC/Floodgate-Fabric"
   },
   "license": "MIT",
-  "icon": "assets/floodgate/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "org.geysermc.floodgate.FabricMod"
+      "org.geysermc.floodgate.platform.fabric.FabricMod"
     ]
   },
   "accessWidener": "floodgate.accesswidener",

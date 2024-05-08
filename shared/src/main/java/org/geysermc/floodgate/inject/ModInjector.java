@@ -1,4 +1,4 @@
-package org.geysermc.floodgate.inject.fabric;
+package org.geysermc.floodgate.inject;
 
 import com.google.inject.Inject;
 import io.netty.channel.*;
@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
-import org.geysermc.floodgate.inject.CommonPlatformInjector;
 
 @RequiredArgsConstructor
 public final class ModInjector extends CommonPlatformInjector {

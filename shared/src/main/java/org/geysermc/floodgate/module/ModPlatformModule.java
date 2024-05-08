@@ -2,9 +2,8 @@ package org.geysermc.floodgate.module;
 
 import com.google.inject.name.Names;
 import org.apache.logging.log4j.Logger;
-import org.geysermc.floodgate.inject.fabric.ModInjector;
+import org.geysermc.floodgate.inject.ModInjector;
 import org.geysermc.floodgate.listener.ModEventListener;
-import org.geysermc.floodgate.listener.FabricEventRegistration;
 import org.geysermc.floodgate.logger.Log4jFloodgateLogger;
 import org.geysermc.floodgate.platform.listener.ListenerRegistration;
 import org.geysermc.floodgate.platform.pluginmessage.PluginMessageUtils;

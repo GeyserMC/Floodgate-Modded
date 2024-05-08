@@ -1,8 +1,34 @@
+@file:Suppress("UnstableApiUsage")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+dependencyResolutionManagement {
+    repositories {
+        // mavenLocal()
+
+        // Floodgate, Cumulus etc.
+        maven("https://repo.opencollab.dev/main")
+
+        // NeoForge
+        maven("https://maven.neoforged.net/releases") {
+            mavenContent { releasesOnly() }
+        }
+
+        // Minecraft
+        maven("https://libraries.minecraft.net") {
+            name = "minecraft"
+            mavenContent { releasesOnly() }
+        }
+
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
-
-        maven("https://repo.opencollab.dev/maven-snapshots")
+        maven("https://repo.opencollab.dev/main/")
         maven("https://jitpack.io") {
             content {
                 includeGroupByRegex("com\\.github\\..*")

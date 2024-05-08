@@ -1,9 +1,10 @@
-package org.geysermc.floodgate.module;
+package org.geysermc.floodgate.platform.fabric.module;
 
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import lombok.SneakyThrows;
 import net.minecraft.commands.CommandSourceStack;
+import org.geysermc.floodgate.module.CommandModule;
 import org.geysermc.floodgate.platform.command.CommandUtil;
 import org.geysermc.floodgate.player.FloodgateCommandPreprocessor;
 import org.geysermc.floodgate.player.UserAudience;

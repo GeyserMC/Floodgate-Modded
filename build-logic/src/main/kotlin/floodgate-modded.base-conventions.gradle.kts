@@ -8,7 +8,7 @@ dependencies {
 }
 
 indra {
-    github("GeyserMC", "Floodgate-Modded") {
+    github("GeyserMC", "floodgate-modded") {
         ci(true)
         issues(true)
         scm(true)

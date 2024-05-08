@@ -15,19 +15,7 @@ configurations {
 
 tasks {
     remapJar {
-        dependsOn(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile)
         archiveBaseName.set("floodgate-fabric")
-        archiveClassifier.set("")
-        archiveVersion.set("")
-    }
-
-    shadowJar {
-        archiveClassifier.set("dev-shadow")
-    }
-
-    jar {
-        archiveClassifier.set("dev")
     }
 }
 
@@ -39,16 +27,31 @@ dependencies {
         isTransitive = false
     }
 
+    api(libs.floodgate.core)
+    api(libs.floodgate.api)
+    api(libs.guice)
+
+    // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
+    modImplementation(libs.fabric.loader)
+
+    modImplementation(libs.cloud.fabric)
+    include(libs.cloud.fabric)
+
     modLocalRuntime(libs.geyser.fabric) {
         exclude(group = "io.netty")
         exclude(group = "io.netty.incubator")
     }
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs(project(":shared").sourceSets["main"].resources.srcDirs)
+repositories {
+    mavenCentral()
+    maven("https://maven.fabricmc.net/")
+    maven("https://repo.opencollab.dev/main/")
+    maven("https://jitpack.io") {
+        content {
+            includeGroupByRegex("com.github.*")
         }
     }
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }

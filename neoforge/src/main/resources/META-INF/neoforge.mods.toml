@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+[[mods]]
+modId="floodgate"
+version="${version}"
+displayName="Floodgate"
+displayURL="https://geysermc.org/"
+logoFile= "../assets/floodgate/icon.png"
+authors="GeyserMC"
+description="${description}"
+[[mixins]]
+config = "floodgate.mixins.json"
+[[dependencies.floodgate]]
+modId="neoforge"
+type="required"
+versionRange="[20.5.0-beta,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.floodgate]]
+modId="minecraft"
+type="required"
+versionRange="[1.20.5,1.21)"
+ordering="NONE"
+side="BOTH"

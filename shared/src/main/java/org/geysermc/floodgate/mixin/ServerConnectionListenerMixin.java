@@ -1,7 +1,7 @@
 package org.geysermc.floodgate.mixin;
 
 import net.minecraft.server.network.ServerConnectionListener;
-import org.geysermc.floodgate.inject.fabric.ModInjector;
+import org.geysermc.floodgate.inject.ModInjector;
 import io.netty.channel.ChannelFuture;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

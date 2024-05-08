@@ -24,37 +24,46 @@ dependencies {
 
     common(project(":shared", configuration = "namedElements")) { isTransitive = false }
     neoForge(libs.neoforge)
-    compileOnly(libs.geyser.api)
+
+    api(libs.floodgate.core)
+    api(libs.floodgate.api)
+    api(libs.guice)
+
+    modImplementation(libs.cloud.neoforge)
+    include(libs.cloud.neoforge)
+
+//    modLocalRuntime(libs.geyser.neoforge) {
+//        exclude(group = "io.netty")
+//        exclude(group = "io.netty.incubator")
+//    }
 
     shadow(project(path = ":shared", configuration = "transformProductionNeoForge")) { isTransitive = false }
-
-    // TODO fix neoforge runServer task
-    modRuntimeOnly(libs.pack.converter)
-    includeTransitive(libs.pack.converter)
 }
 
 tasks {
+    processResources {
+        from(project(":common").file("src/main/resources/***.accesswidener")) {
+            into("/assets/")
+        }
+    }
+
     remapJar {
-        dependsOn(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile)
+        dependsOn(processResources)
+        atAccessWideners.add("***.accesswidener")
         archiveBaseName.set("floodgate-neoforge")
-        archiveClassifier.set("")
-        archiveVersion.set("")
-    }
-
-    shadowJar {
-        archiveClassifier.set("dev-shadow")
-    }
-
-    jar {
-        archiveClassifier.set("dev")
     }
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs(project(":shared").sourceSets["main"].resources.srcDirs)
+repositories {
+    mavenCentral()
+    maven("https://maven.neoforged.net/releases")
+    maven("https://maven.fabricmc.net/")
+    maven("https://repo.opencollab.dev/main/")
+    maven("https://jitpack.io") {
+        content {
+            includeGroupByRegex("com.github.*")
         }
     }
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }

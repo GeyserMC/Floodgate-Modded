@@ -6,9 +6,7 @@ import org.geysermc.configutils.file.template.TemplateReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -25,10 +23,7 @@ public class FabricTemplateReader implements TemplateReader {
         Optional<Path> optional = container.findPath(configName);
         if (optional.isPresent()) {
             try {
-                InputStream stream = optional.get().getFileSystem()
-                        .provider()
-                        .newInputStream(optional.get());
-                return new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                return Files.newBufferedReader(optional.get());
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

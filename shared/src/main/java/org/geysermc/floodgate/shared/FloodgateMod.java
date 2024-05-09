@@ -1,23 +1,18 @@
 package org.geysermc.floodgate.shared;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.Module;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
-import org.geysermc.floodgate.core.FloodgatePlatform;
-import org.geysermc.floodgate.core.module.PluginMessageModule;
-import org.geysermc.floodgate.core.module.ServerCommonModule;
-import org.geysermc.floodgate.shared.inject.ModInjector;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
+import org.geysermc.floodgate.core.FloodgatePlatform;
 import org.geysermc.floodgate.core.player.UserAudience;
+import org.geysermc.floodgate.shared.inject.ModInjector;
 import org.geysermc.floodgate.shared.module.ModAddonModule;
 import org.geysermc.floodgate.shared.module.ModListenerModule;
-import org.geysermc.floodgate.shared.module.ModPlatformModule;
 import org.incendo.cloud.CommandManager;
-
-import java.nio.file.Path;
 
 public abstract class FloodgateMod {
 
@@ -28,14 +23,9 @@ public abstract class FloodgateMod {
     @Getter @Setter
     private static CommandManager<UserAudience> commandManager;
 
-    protected void init(ServerCommonModule commonModule, ModPlatformModule platformModule) {
+    protected void init(Module... modules) {
         ModInjector.setInstance(new ModInjector());
-
-        injector = Guice.createInjector(
-                commonModule,
-                platformModule
-        );
-
+        injector = Guice.createInjector(modules);
         platform = injector.getInstance(FloodgatePlatform.class);
     }
 
@@ -53,8 +43,7 @@ public abstract class FloodgateMod {
         if (!started) {
             platform.enable(
                     new ModAddonModule(),
-                    new ModListenerModule(),
-                    new PluginMessageModule()
+                    new ModListenerModule()
             );
             started = true;
         }
@@ -66,5 +55,9 @@ public abstract class FloodgateMod {
 
     protected void disable() {
         platform.disable();
+    }
+
+    protected void enable(Module... module) {
+        platform.enable(module);
     }
 }

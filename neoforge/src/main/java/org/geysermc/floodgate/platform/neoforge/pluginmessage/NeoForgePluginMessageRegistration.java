@@ -1,7 +1,6 @@
 package org.geysermc.floodgate.platform.neoforge.pluginmessage;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import lombok.Setter;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.geysermc.floodgate.core.pluginmessage.PluginMessageChannel;
 import org.geysermc.floodgate.core.pluginmessage.PluginMessageRegistration;
@@ -12,12 +11,8 @@ import org.geysermc.floodgate.shared.pluginmessage.payloads.TransferPayload;
 
 public class NeoForgePluginMessageRegistration implements PluginMessageRegistration {
 
-    private PayloadRegistrar registrar;
-
-    @SubscribeEvent
-    private void onRegisterPackets(final RegisterPayloadHandlersEvent event) {
-        this.registrar = event.registrar("floodgate").optional();
-    }
+    @Setter
+    private static PayloadRegistrar registrar;
 
     @Override
     public void register(PluginMessageChannel channel) {

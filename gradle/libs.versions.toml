@@ -1,6 +1,6 @@
 [versions]
 geyser = "2.2.3-SNAPSHOT"
-floodgate = "2.2.3-SNAPSHOT"
+floodgate = "core-package-2.2.6-SNAPSHOT"
 indra = "3.1.3"
 shadow = "8.1.1"
 architectury-plugin = "3.4-SNAPSHOT"
@@ -35,9 +35,7 @@ floodgate-api = { group = "org.geysermc.floodgate", name = "api", version.ref = 
 geyser-neoforge = { group = "org.geysermc.geyser", name = "neoforge", version.ref = "geyser" }
 geyser-fabric = { group = "org.geysermc.geyser", name = "fabric", version.ref = "geyser" }
 geyser-mod = { group = "org.geysermc.geyser", name = "mod", version.ref = "geyser" }
-geyser-common = { group = "org.geysermc.geyser", name = "common", version.ref = "geyser" }
-geyser-events = { group = "org.geysermc.event", name = "events", version.ref = "events" }
-geyser-cumulus = { group = "org.geysermc.cumulus", name = "cumulus", version.ref = "cumulus" }
+geyser-core = { group = "org.geysermc.geyser", name = "core", version.ref = "geyser" }
 indra = { group = "net.kyori", name  = "indra-common", version.ref = "indra" }
 shadow = { group = "com.github.johnrengelman", name = "shadow", version.ref = "shadow" }
 architectury-plugin = { group = "architectury-plugin", name = "architectury-plugin.gradle.plugin", version.ref = "architectury-plugin" }
@@ -45,13 +43,8 @@ architectury-loom = { group = "dev.architectury.loom", name = "dev.architectury.
 guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
 bstats = { group = "org.bstats", name = "bstats-base", version.ref = "bstats" }
 configutils = { group = "org.geysermc.configutils", name = "configutils", version.ref = "configutils" }
-aopalliance = { group = "aopalliance", name = "aopalliance", version.ref = "aopalliance" }
-javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax" }
-jakarta-inject = { group = "jakarta.inject", name = "jakarta.inject", version.ref = "jakarta" }
-websocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "websocket" }
 cloud-fabric = { group = "org.incendo", name = "cloud-fabric", version.ref = "cloud" }
 cloud-neoforge = { group = "org.incendo", name = "cloud-neoforge", version.ref = "cloud" }
-lmbda = { group = "org.lanternpowered", name = "lmbda", version.ref = "lmbda" }
 minotaur = { group = "com.modrinth.minotaur", name = "Minotaur", version.ref = "minotaur" }
 mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
 asm = { group = "org.ow2.asm", name = "asm-debug-all", version.ref = "asm" }

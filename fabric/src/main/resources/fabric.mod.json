@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "${id}",
-  "version": "${version}",
-  "name": "{$name}",
-  "description": "${description}",
+  "id": "$id",
+  "version": "$version",
+  "name": "$name",
+  "description": "$description",
   "authors": [
-    "{$author}"
+    "$author"
   ],
   "contact": {
-    "website": "{$url}",
+    "website": "$url",
     "repo": "https://github.com/GeyserMC/Floodgate-Modded"
   },
   "license": "MIT",
@@ -25,6 +25,6 @@
   "depends": {
     "fabricloader": ">=0.15.10",
     "fabric": "*",
-    "minecraft": ">={$minecraft_version}"
+    "minecraft": ">=$minecraft_version"
   }
 }

@@ -1,7 +1,7 @@
 package org.geysermc.floodgate.platform.neoforge.util;
 
 import net.neoforged.fml.ModList;
-import org.geysermc.floodgate.util.ModMixinConfigPlugin;
+import org.geysermc.floodgate.shared.util.ModMixinConfigPlugin;
 
 public class MixinConfigPlugin extends ModMixinConfigPlugin {
     @Override

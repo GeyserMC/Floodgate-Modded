@@ -1,7 +1,7 @@
 package org.geysermc.floodgate.platform.fabric.util;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.geysermc.floodgate.util.ModMixinConfigPlugin;
+import org.geysermc.floodgate.shared.util.ModMixinConfigPlugin;
 
 public class MixinConfigPlugin extends ModMixinConfigPlugin {
     @Override

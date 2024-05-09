@@ -3,6 +3,8 @@ architectury {
     neoForge()
 }
 
+provided("com.google.guava", "failureaccess")
+
 val common: Configuration by configurations.creating
 // Without this, the mixin config isn't read properly with the runServer neoforge task
 val developmentNeoForge: Configuration = configurations.getByName("developmentNeoForge")
@@ -56,6 +58,7 @@ tasks {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://maven.neoforged.net/releases")
     maven("https://maven.fabricmc.net/")

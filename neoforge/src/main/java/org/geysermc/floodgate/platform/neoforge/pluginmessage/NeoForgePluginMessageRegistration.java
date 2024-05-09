@@ -3,12 +3,12 @@ package org.geysermc.floodgate.platform.neoforge.pluginmessage;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import org.geysermc.floodgate.pluginmessage.PluginMessageChannel;
-import org.geysermc.floodgate.pluginmessage.PluginMessageRegistration;
-import org.geysermc.floodgate.pluginmessage.payloads.FormPayload;
-import org.geysermc.floodgate.pluginmessage.payloads.PacketPayload;
-import org.geysermc.floodgate.pluginmessage.payloads.SkinPayload;
-import org.geysermc.floodgate.pluginmessage.payloads.TransferPayload;
+import org.geysermc.floodgate.core.pluginmessage.PluginMessageChannel;
+import org.geysermc.floodgate.core.pluginmessage.PluginMessageRegistration;
+import org.geysermc.floodgate.shared.pluginmessage.payloads.FormPayload;
+import org.geysermc.floodgate.shared.pluginmessage.payloads.PacketPayload;
+import org.geysermc.floodgate.shared.pluginmessage.payloads.SkinPayload;
+import org.geysermc.floodgate.shared.pluginmessage.payloads.TransferPayload;
 
 public class NeoForgePluginMessageRegistration implements PluginMessageRegistration {
 

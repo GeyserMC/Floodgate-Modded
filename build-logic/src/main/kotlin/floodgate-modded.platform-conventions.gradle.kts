@@ -56,12 +56,6 @@ dependencies {
 }
 
 tasks {
-    processResources {
-        filesMatching(listOf("floodgate.mixins.json")) {
-            expand("plugin" to "org.geysermc.floodgate.platform.${project.name}.util.MixinConfigPlugin")
-        }
-    }
-
     sourcesJar {
         archiveClassifier.set("sources")
         from(sourceSets.main.get().allSource)

@@ -42,6 +42,7 @@ dependencies {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")

@@ -12,6 +12,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
+import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
 import org.geysermc.floodgate.platform.neoforge.util.NeoForgeTemplateReader;
@@ -26,7 +27,8 @@ public final class NeoForgeMod extends FloodgateMod {
                 FMLPaths.CONFIGDIR.get().resolve("floodgate"),
                 new NeoForgeTemplateReader(container)
             ),
-            new NeoForgePlatformModule()
+            new NeoForgePlatformModule(),
+            new NeoForgeCommandModule()
         );
 
         modEventBus.addListener(this::onRegisterPackets);

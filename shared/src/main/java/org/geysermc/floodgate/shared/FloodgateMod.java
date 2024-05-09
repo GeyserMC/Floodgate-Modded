@@ -29,10 +29,6 @@ public abstract class FloodgateMod {
         platform = injector.getInstance(FloodgatePlatform.class);
     }
 
-    protected void enableCommandModule(Module postInitializeModules) {
-        platform.enable(postInitializeModules);
-    }
-
     protected void enable(MinecraftServer server) {
         long ctm = System.currentTimeMillis();
 

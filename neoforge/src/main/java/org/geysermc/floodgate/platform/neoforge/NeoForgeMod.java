@@ -10,22 +10,28 @@ import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
-import org.geysermc.floodgate.platform.neoforge.util.NeoForgeTemplateReader;
 import org.geysermc.floodgate.shared.FloodgateMod;
+import org.geysermc.floodgate.shared.util.ModTemplateReader;
+
+import java.nio.file.Path;
 
 @Mod("floodgate")
 public final class NeoForgeMod extends FloodgateMod {
 
+    private final ModContainer container;
+
     public NeoForgeMod(IEventBus modEventBus, ModContainer container) {
+        this.container = container;
         init(
             new ServerCommonModule(
                 FMLPaths.CONFIGDIR.get().resolve("floodgate"),
-                new NeoForgeTemplateReader(container)
+                new ModTemplateReader()
             ),
             new NeoForgePlatformModule(),
             new NeoForgeCommandModule()
@@ -55,5 +61,10 @@ public final class NeoForgeMod extends FloodgateMod {
     private void onRegisterPackets(final RegisterPayloadHandlersEvent event) {
         NeoForgePluginMessageRegistration.setRegistrar(event.registrar("floodgate").optional());
         enable(new PluginMessageModule());
+    }
+
+    @Override
+    public @Nullable Path getResourcePath(String file) {
+        return container.getModInfo().getOwningFile().getFile().findResource(file);
     }
 }

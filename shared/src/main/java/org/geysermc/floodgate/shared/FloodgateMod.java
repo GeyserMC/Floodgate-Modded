@@ -6,6 +6,7 @@ import com.google.inject.Module;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.FloodgatePlatform;
 import org.geysermc.floodgate.core.player.UserAudience;
@@ -14,7 +15,10 @@ import org.geysermc.floodgate.shared.module.ModAddonModule;
 import org.geysermc.floodgate.shared.module.ModListenerModule;
 import org.incendo.cloud.CommandManager;
 
+import java.nio.file.Path;
+
 public abstract class FloodgateMod {
+    public static FloodgateMod INSTANCE;
 
     private boolean started;
     private FloodgatePlatform platform;
@@ -24,6 +28,7 @@ public abstract class FloodgateMod {
     private static CommandManager<UserAudience> commandManager;
 
     protected void init(Module... modules) {
+        INSTANCE = this;
         ModInjector.setInstance(new ModInjector());
         injector = Guice.createInjector(modules);
         platform = injector.getInstance(FloodgatePlatform.class);
@@ -56,4 +61,6 @@ public abstract class FloodgateMod {
     protected void enable(Module... module) {
         platform.enable(module);
     }
+
+    public @Nullable abstract Path getResourcePath(String file);
 }

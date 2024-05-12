@@ -24,7 +24,6 @@ dependencies {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven("https://maven.neoforged.net/releases")
     maven("https://maven.fabricmc.net/")
     maven("https://repo.opencollab.dev/main/")
     maven("https://jitpack.io") {

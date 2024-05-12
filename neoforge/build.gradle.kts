@@ -35,12 +35,6 @@ dependencies {
 
     modImplementation(libs.cloud.neoforge)
     include(libs.cloud.neoforge)
-
-//    modLocalRuntime(libs.geyser.neoforge) {
-//        exclude(group = "io.netty")
-//        exclude(group = "io.netty.incubator")
-//    }
-
 }
 
 tasks {

@@ -32,7 +32,6 @@ neoforge-version = "20.6.43-beta"
 [libraries]
 floodgate-core = { group = "org.geysermc.floodgate", name = "core", version.ref = "floodgate" }
 floodgate-api = { group = "org.geysermc.floodgate", name = "api", version.ref = "floodgate" }
-geyser-neoforge = { group = "org.geysermc.geyser", name = "neoforge", version.ref = "geyser" }
 geyser-fabric = { group = "org.geysermc.geyser", name = "fabric", version.ref = "geyser" }
 geyser-mod = { group = "org.geysermc.geyser", name = "mod", version.ref = "geyser" }
 geyser-core = { group = "org.geysermc.geyser", name = "core", version.ref = "geyser" }

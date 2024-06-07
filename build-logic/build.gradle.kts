@@ -5,10 +5,9 @@ plugins {
 repositories {
     gradlePluginPortal()
     mavenCentral()
+    maven("https://maven.architectury.dev/")
     maven("https://maven.fabricmc.net/")
     maven("https://maven.neoforged.net/releases/")
-    maven("https://maven.architectury.dev/")
-    maven("https://repo.opencollab.dev/main/")
 }
 
 dependencies {

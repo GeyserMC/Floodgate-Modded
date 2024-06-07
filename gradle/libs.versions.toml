@@ -33,8 +33,8 @@ neoforge-version = "20.6.43-beta"
 # Until floodgate-dev does the core repackage by itself, we need to use a fork
 #floodgate-core = { group = "org.geysermc.floodgate", name = "core", version.ref = "floodgate" }
 #floodgate-api = { group = "org.geysermc.floodgate", name = "api", version.ref = "floodgate" }
-floodgate-core = { group = "com.github.onebeastchris", name = "core", version = "core-package-SNAPSHOT" }
-floodgate-api = { group = "com.github.onebeastchris", name = "api", version = "core-package-SNAPSHOT" }
+floodgate-core = { group = "com.github.onebeastchris.floodgate", name = "core", version = "core-package-SNAPSHOT" }
+floodgate-api = { group = "com.github.onebeastchris.floodgate", name = "api", version = "core-package-SNAPSHOT" }
 
 geyser-fabric = { group = "org.geysermc.geyser", name = "fabric", version.ref = "geyser" }
 geyser-mod = { group = "org.geysermc.geyser", name = "mod", version.ref = "geyser" }

@@ -7,7 +7,7 @@ plugins {
 val platforms = setOf(
     projects.fabric,
     projects.neoforge,
-    projects.shared
+    projects.mod
 ).map { it.dependencyProject }
 
 subprojects {

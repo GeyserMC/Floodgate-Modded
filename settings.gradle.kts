@@ -28,6 +28,6 @@ pluginManagement {
 
 rootProject.name = "floodgate-modded"
 
-include(":shared")
+include(":mod")
 include(":fabric")
 include(":neoforge")

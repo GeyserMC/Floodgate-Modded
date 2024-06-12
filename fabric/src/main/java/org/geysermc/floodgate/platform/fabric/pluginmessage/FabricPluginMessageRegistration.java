@@ -4,10 +4,10 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import org.geysermc.floodgate.core.pluginmessage.PluginMessageChannel;
 import org.geysermc.floodgate.core.pluginmessage.PluginMessageRegistration;
-import org.geysermc.floodgate.shared.pluginmessage.payloads.FormPayload;
-import org.geysermc.floodgate.shared.pluginmessage.payloads.PacketPayload;
-import org.geysermc.floodgate.shared.pluginmessage.payloads.SkinPayload;
-import org.geysermc.floodgate.shared.pluginmessage.payloads.TransferPayload;
+import org.geysermc.floodgate.mod.pluginmessage.payloads.FormPayload;
+import org.geysermc.floodgate.mod.pluginmessage.payloads.PacketPayload;
+import org.geysermc.floodgate.mod.pluginmessage.payloads.SkinPayload;
+import org.geysermc.floodgate.mod.pluginmessage.payloads.TransferPayload;
 
 public class FabricPluginMessageRegistration implements PluginMessageRegistration {
     @Override

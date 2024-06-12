@@ -1,14 +1,10 @@
 package org.geysermc.floodgate.platform.neoforge.listener;
 
-
-import com.google.inject.Inject;
-import lombok.RequiredArgsConstructor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.geysermc.floodgate.shared.listener.ModEventListener;
 import org.geysermc.floodgate.core.platform.listener.ListenerRegistration;
+import org.geysermc.floodgate.mod.listener.ModEventListener;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public final class NeoForgeEventRegistration implements ListenerRegistration<ModEventListener> {
     private ModEventListener listener;
     @Override

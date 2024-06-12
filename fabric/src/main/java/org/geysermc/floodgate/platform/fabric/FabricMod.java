@@ -9,10 +9,10 @@ import net.fabricmc.loader.api.ModContainer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
+import org.geysermc.floodgate.mod.FloodgateMod;
+import org.geysermc.floodgate.mod.util.ModTemplateReader;
 import org.geysermc.floodgate.platform.fabric.module.FabricCommandModule;
 import org.geysermc.floodgate.platform.fabric.module.FabricPlatformModule;
-import org.geysermc.floodgate.shared.FloodgateMod;
-import org.geysermc.floodgate.shared.util.ModTemplateReader;
 
 import java.nio.file.Path;
 
@@ -36,14 +36,14 @@ public final class FabricMod extends FloodgateMod implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::enable);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            ClientLifecycleEvents.CLIENT_STOPPING.register(($) -> this.disable());
+            ClientLifecycleEvents.CLIENT_STOPPING.register($ -> this.disable());
         } else {
-            ServerLifecycleEvents.SERVER_STOPPING.register(($) -> this.disable());
+            ServerLifecycleEvents.SERVER_STOPPING.register($ -> this.disable());
         }
     }
 
     @Override
-    public @Nullable Path getResourcePath(String file) {
+    public @Nullable Path resourcePath(String file) {
         return container.findPath(file).orElse(null);
     }
 }

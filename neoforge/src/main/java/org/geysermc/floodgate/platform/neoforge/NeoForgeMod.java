@@ -13,11 +13,11 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
+import org.geysermc.floodgate.mod.FloodgateMod;
+import org.geysermc.floodgate.mod.util.ModTemplateReader;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
-import org.geysermc.floodgate.shared.FloodgateMod;
-import org.geysermc.floodgate.shared.util.ModTemplateReader;
 
 import java.nio.file.Path;
 
@@ -64,7 +64,7 @@ public final class NeoForgeMod extends FloodgateMod {
     }
 
     @Override
-    public @Nullable Path getResourcePath(String file) {
+    public @Nullable Path resourcePath(String file) {
         return container.getModInfo().getOwningFile().getFile().findResource(file);
     }
 }

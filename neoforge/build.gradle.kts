@@ -25,8 +25,8 @@ dependencies {
     }
 
     neoForge(libs.neoforge)
-    common(project(":shared", configuration = "namedElements")) { isTransitive = false }
-    shadow(project(path = ":shared", configuration = "transformProductionNeoForge")) { isTransitive = false }
+    common(project(":mod", configuration = "namedElements")) { isTransitive = false }
+    shadow(project(path = ":mod", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
     includeTransitive(libs.floodgate.core)
 

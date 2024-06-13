@@ -26,7 +26,6 @@ public final class FabricCommandModule extends CommandModule {
         );
         commandManager.registerCommandPreProcessor(new FloodgateCommandPreprocessor<>(commandUtil));
         ((ModCommandUtil) commandUtil).setCommandManager(commandManager);
-
         return commandManager;
     }
 

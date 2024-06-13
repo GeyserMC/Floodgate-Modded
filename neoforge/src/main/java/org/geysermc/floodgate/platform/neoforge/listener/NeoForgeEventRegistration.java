@@ -7,6 +7,7 @@ import org.geysermc.floodgate.mod.listener.ModEventListener;
 
 public final class NeoForgeEventRegistration implements ListenerRegistration<ModEventListener> {
     private ModEventListener listener;
+
     @Override
     public void register(ModEventListener listener) {
         NeoForge.EVENT_BUS.addListener(this::onPlayerJoin);

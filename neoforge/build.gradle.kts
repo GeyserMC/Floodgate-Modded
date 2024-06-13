@@ -39,7 +39,7 @@ dependencies {
 
 tasks {
     processResources {
-        from(project(":shared").file("src/main/resources/floodgate.accesswidener")) {
+        from(project(":mod").file("src/main/resources/floodgate.accesswidener")) {
             into("/assets/")
         }
     }

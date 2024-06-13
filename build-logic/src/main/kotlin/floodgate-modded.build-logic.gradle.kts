@@ -11,4 +11,10 @@ repositories {
     }
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://prmaven.neoforged.net/NeoForge/pr1076") {
+        name = "Maven for 1.21 PR"
+        content {
+            includeModule("net.neoforged", "neoforge")
+        }
+    }
 }

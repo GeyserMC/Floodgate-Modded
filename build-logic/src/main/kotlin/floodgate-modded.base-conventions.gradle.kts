@@ -30,7 +30,7 @@ tasks {
                 "description" to project.description,
                 "url" to "https://geysermc.org",
                 "author" to "GeyserMC",
-                "minecraft_version" to "1.20.5"
+                "minecraft_version" to libs.versions.minecraft.version.get()
             )
         }
     }

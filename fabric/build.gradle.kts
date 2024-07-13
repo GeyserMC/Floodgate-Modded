@@ -17,6 +17,10 @@ tasks {
     remapJar {
         archiveBaseName.set("floodgate-fabric")
     }
+
+    modrinth {
+        loaders.add("fabric")
+    }
 }
 
 dependencies {
@@ -28,14 +32,9 @@ dependencies {
     }
 
     includeTransitive(libs.floodgate.core)
-    api(libs.floodgate.core)
-    api(libs.guice)
+    implementation(libs.floodgate.core)
+    implementation(libs.guice)
 
     modImplementation(libs.cloud.fabric)
     include(libs.cloud.fabric)
-
-    modLocalRuntime(libs.geyser.fabric) {
-        exclude(group = "io.netty")
-        exclude(group = "io.netty.incubator")
-    }
 }

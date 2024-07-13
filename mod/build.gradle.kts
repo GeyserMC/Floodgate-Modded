@@ -20,3 +20,14 @@ dependencies {
     // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
     compileOnly(libs.fabric.loader)
 }
+
+afterEvaluate {
+    // We don't need these
+    tasks.named("remapModrinthJar").configure {
+        enabled = false
+    }
+
+    tasks.named("modrinth").configure {
+        enabled = false
+    }
+}

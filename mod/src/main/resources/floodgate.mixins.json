@@ -9,6 +9,7 @@
     "ClientIntentionPacketMixinInterface",
     "ConnectionMixin",
     "FloodgateUtilMixin",
+    "FloodgateVersionCommandMixin",
     "GeyserModInjectorMixin",
     "ServerConnectionListenerMixin"
   ],

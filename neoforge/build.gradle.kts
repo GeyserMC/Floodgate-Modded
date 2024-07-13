@@ -49,4 +49,8 @@ tasks {
         atAccessWideners.add("floodgate.accesswidener")
         archiveBaseName.set("floodgate-neoforge")
     }
+
+    modrinth {
+        loaders.add("neoforge")
+    }
 }

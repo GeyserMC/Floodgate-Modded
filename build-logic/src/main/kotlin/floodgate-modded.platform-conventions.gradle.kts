@@ -11,7 +11,6 @@ plugins {
 provided("com.google.code.gson", "gson")
 provided("org.slf4j", ".*")
 provided("com.nukkitx.fastutil", ".*")
-provided("org.incendo", ".*") // technically not provided, but jij'd by cloud-fabric/-neoforge
 
 // these we just don't want to include
 provided("org.checkerframework", ".*")
@@ -20,6 +19,10 @@ provided("com.github.spotbugs", "spotbugs-annotations")
 provided("com.google.guava", "guava")
 provided("com.google.code.findbugs", ".*")
 provided("org.ow2.asm", "asm")
+
+// cloud-fabric/cloud-neoforge jij's all cloud depends already
+provided("org.incendo", ".*")
+provided("io.leangen.geantyref", "geantyref")
 
 architectury {
     minecraft = libs.versions.minecraft.version.get()
@@ -88,6 +91,9 @@ tasks {
         archiveVersion.set(project.version.toString() + "+build."  + System.getenv("GITHUB_RUN_NUMBER"))
         archiveClassifier.set("")
     }
+
+    // Readme sync
+    modrinth.get().dependsOn(tasks.modrinthSyncBody)
 }
 
 afterEvaluate {
@@ -112,15 +118,16 @@ afterEvaluate {
 }
 
 modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN")) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    token.set(""/*System.getenv("MODRINTH_TOKEN")*/) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
     projectId.set("bWrNNfkb")
     versionNumber.set(project.version as String + "-" + System.getenv("GITHUB_RUN_NUMBER"))
     versionType.set("beta")
     changelog.set("A changelog can be found at https://github.com/GeyserMC/Floodgate-Modded/commits")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
+    debugMode.set(true)
 
     uploadFile.set(tasks.getByPath("remapModrinthJar"))
-    gameVersions.addAll("1.20.5", "1.20.6")
+    gameVersions.add(libs.minecraft.get().version as String)
     failSilently.set(true)
 }

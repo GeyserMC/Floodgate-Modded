@@ -125,7 +125,6 @@ modrinth {
     changelog.set("A changelog can be found at https://github.com/GeyserMC/Floodgate-Modded/commits")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
-    debugMode.set(true)
 
     uploadFile.set(tasks.getByPath("remapModrinthJar"))
     gameVersions.add(libs.minecraft.get().version as String)

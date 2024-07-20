@@ -21,7 +21,7 @@ import java.nio.file.Path;
 public class FloodgateUtilMixin {
     @Redirect(method = "readProperties",
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
-    private static InputStream redirectInputStream(ClassLoader instance, String string) {
+    private static InputStream floodgate$redirectInputStream(ClassLoader instance, String string) {
         Path path = FloodgateMod.INSTANCE.resourcePath(string);
         try {
             return path == null ? null : Files.newInputStream(path);
@@ -32,11 +32,11 @@ public class FloodgateUtilMixin {
 
     @Redirect(method = "getGeneratedClassesForAnnotation(Ljava/lang/String;)Ljava/util/Set;",
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
-    private static InputStream redirectInputStreamAnnotation(ClassLoader instance, String string) {
+    private static InputStream floodgate$redirectInputStreamAnnotation(ClassLoader instance, String string) {
         Path path = FloodgateMod.INSTANCE.resourcePath(string);
 
         if (path == null) {
-            throw new IllegalStateException("unable to find annotation" + string);
+            throw new IllegalStateException("Unable to find annotation class! " + string);
         }
 
         try {

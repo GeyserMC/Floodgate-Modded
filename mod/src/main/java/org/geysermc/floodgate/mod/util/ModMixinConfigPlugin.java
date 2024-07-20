@@ -21,10 +21,10 @@ public class ModMixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.equals("org.geysermc.floodgate.mixin.ClientIntentionPacketMixin")) {
+        if (mixinClassName.equals("org.geysermc.floodgate.mod.mixin.ClientIntentionPacketMixin")) {
             return applyProxyFix();
         }
-        if (mixinClassName.equals("org.geysermc.floodgate.mixin.GeyserModInjectorMixin")) {
+        if (mixinClassName.equals("org.geysermc.floodgate.mod.mixin.GeyserModInjectorMixin")) {
             return isGeyserLoaded();
         }
         return true;
@@ -48,12 +48,12 @@ public class ModMixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @ExpectPlatform
-    private static boolean isGeyserLoaded() {
+    public static boolean isGeyserLoaded() {
         throw new IllegalStateException("isGeyserLoaded is not implemented!");
     }
 
     @ExpectPlatform
-    private static boolean applyProxyFix() {
+    public static boolean applyProxyFix() {
         throw new IllegalStateException("applyProxyFix is not implemented!");
     }
 }

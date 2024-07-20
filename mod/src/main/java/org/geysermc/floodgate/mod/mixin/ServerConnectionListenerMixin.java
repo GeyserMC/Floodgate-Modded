@@ -19,7 +19,7 @@ public abstract class ServerConnectionListenerMixin {
     @Shadow @Final private List<ChannelFuture> channels;
 
     @Inject(method = "startTcpServerListener", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    public void onChannelAdd(InetAddress address, int port, CallbackInfo ci) {
+    public void floodgate$onChannelAdd(InetAddress address, int port, CallbackInfo ci) {
         ModInjector.getInstance().injectClient(this.channels.get(this.channels.size() - 1));
     }
 }

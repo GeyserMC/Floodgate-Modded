@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.mod.FloodgateMod;
@@ -19,7 +20,11 @@ import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mod("floodgate")
 public final class NeoForgeMod extends FloodgateMod {
@@ -66,5 +71,18 @@ public final class NeoForgeMod extends FloodgateMod {
     @Override
     public @Nullable Path resourcePath(String file) {
         return container.getModInfo().getOwningFile().getFile().findResource(file);
+    }
+
+    public Set<Class<?>> getAnnotatedClasses(Class<? extends Annotation> annotationClass) {
+        return container.getModInfo().getOwningFile().getFile().getScanResult().getAnnotatedBy(annotationClass, ElementType.TYPE)
+                .map(annotationData -> {
+                    try {
+                        return Class.forName(annotationData.clazz().getClassName());
+                    } catch (Exception e) {
+                        injector.getInstance(FloodgateLogger.class).error(e.getMessage(), e);
+                        return null;
+                    }
+                })
+                .collect(Collectors.toSet());
     }
 }

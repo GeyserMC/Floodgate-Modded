@@ -34,8 +34,13 @@ public class FloodgateUtilMixin {
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
     private static InputStream redirectInputStreamAnnotation(ClassLoader instance, String string) {
         Path path = FloodgateMod.INSTANCE.resourcePath(string);
+
+        if (path == null) {
+            throw new IllegalStateException("unable to find annotation" + string);
+        }
+
         try {
-            return path == null ? null : Files.newInputStream(path);
+            return Files.newInputStream(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

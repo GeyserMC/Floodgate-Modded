@@ -27,11 +27,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mod("floodgate")
-public final class NeoForgeMod extends FloodgateMod {
+public final class NeoForgeFloodgateMod extends FloodgateMod {
 
     private final ModContainer container;
 
-    public NeoForgeMod(IEventBus modEventBus, ModContainer container) {
+    public NeoForgeFloodgateMod(IEventBus modEventBus, ModContainer container) {
         this.container = container;
         init(
             new ServerCommonModule(
@@ -73,8 +73,17 @@ public final class NeoForgeMod extends FloodgateMod {
         return container.getModInfo().getOwningFile().getFile().findResource(file);
     }
 
+    @Override
+    public boolean isClient() {
+        return FMLLoader.getDist().isClient();
+    }
+
     public Set<Class<?>> getAnnotatedClasses(Class<? extends Annotation> annotationClass) {
-        return container.getModInfo().getOwningFile().getFile().getScanResult().getAnnotatedBy(annotationClass, ElementType.TYPE)
+        return container.getModInfo()
+            .getOwningFile()
+            .getFile()
+            .getScanResult()
+            .getAnnotatedBy(annotationClass, ElementType.TYPE)
                 .map(annotationData -> {
                     try {
                         return Class.forName(annotationData.clazz().getClassName());

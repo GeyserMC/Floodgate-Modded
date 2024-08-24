@@ -16,7 +16,7 @@ import org.geysermc.floodgate.platform.fabric.module.FabricPlatformModule;
 
 import java.nio.file.Path;
 
-public final class FabricMod extends FloodgateMod implements ModInitializer {
+public final class FabricFloodgateMod extends FloodgateMod implements ModInitializer {
 
     private ModContainer container;
 
@@ -45,5 +45,10 @@ public final class FabricMod extends FloodgateMod implements ModInitializer {
     @Override
     public @Nullable Path resourcePath(String file) {
         return container.findPath(file).orElse(null);
+    }
+
+    @Override
+    public boolean isClient() {
+        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     }
 }

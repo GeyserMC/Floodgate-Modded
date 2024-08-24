@@ -3,6 +3,7 @@ package org.geysermc.floodgate.mod;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
@@ -18,6 +19,7 @@ public abstract class FloodgateMod {
 
     private boolean started;
     private FloodgatePlatform platform;
+    @Getter
     protected Injector injector;
 
     protected void init(Module... modules) {
@@ -56,4 +58,6 @@ public abstract class FloodgateMod {
     }
 
     public @Nullable abstract Path resourcePath(String file);
+
+    public abstract boolean isClient();
 }

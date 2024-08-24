@@ -19,6 +19,7 @@ import java.nio.file.Path;
  */
 @Mixin(value = Utils.class, remap = false)
 public class FloodgateUtilMixin {
+
     @Redirect(method = "readProperties",
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
     private static InputStream floodgate$redirectInputStream(ClassLoader instance, String string) {

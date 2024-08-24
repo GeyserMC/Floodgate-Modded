@@ -15,6 +15,7 @@ import org.geysermc.floodgate.core.platform.command.CommandUtil;
 import org.geysermc.floodgate.core.platform.util.PlatformUtils;
 import org.geysermc.floodgate.core.skin.SkinApplier;
 import org.geysermc.floodgate.core.util.LanguageManager;
+import org.geysermc.floodgate.mod.FloodgateMod;
 import org.geysermc.floodgate.mod.inject.ModInjector;
 import org.geysermc.floodgate.mod.logger.Log4jFloodgateLogger;
 import org.geysermc.floodgate.mod.pluginmessage.ModSkinApplier;
@@ -53,13 +54,13 @@ public abstract class ModPlatformModule extends AbstractModule {
     @Provides
     @Named("packetEncoder")
     public String packetEncoder() {
-        return "encoder";
+        return FloodgateMod.INSTANCE.isClient() ? "encoder" : "outbound_config";
     }
 
     @Provides
     @Named("packetDecoder")
     public String packetDecoder() {
-        return "decoder";
+        return FloodgateMod.INSTANCE.isClient() ? "inbound_config" : "decoder" ;
     }
 
     @Provides

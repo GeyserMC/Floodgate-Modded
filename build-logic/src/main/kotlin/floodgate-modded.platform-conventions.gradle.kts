@@ -88,7 +88,7 @@ tasks {
     register("remapModrinthJar", RemapJarTask::class) {
         dependsOn(shadowJar)
         inputFile.set(shadowJar.get().archiveFile)
-        archiveVersion.set(project.version.toString() + "+build."  + System.getenv("GITHUB_RUN_NUMBER"))
+        archiveVersion.set(versionName(project))
         archiveClassifier.set("")
     }
 
@@ -118,15 +118,17 @@ afterEvaluate {
 }
 
 modrinth {
-    token.set(""/*System.getenv("MODRINTH_TOKEN")*/) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    token.set(System.getenv("MODRINTH_TOKEN")) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
     projectId.set("bWrNNfkb")
-    versionNumber.set(project.version as String + "-" + System.getenv("GITHUB_RUN_NUMBER"))
-    versionType.set("beta")
+    versionName.set(versionName(project))
+    versionNumber.set(projectVersion(project))
+    versionType.set("release")
     changelog.set("A changelog can be found at https://github.com/GeyserMC/Floodgate-Modded/commits")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
     uploadFile.set(tasks.getByPath("remapModrinthJar"))
     gameVersions.add(libs.minecraft.get().version as String)
-    failSilently.set(true)
+    gameVersions.add("1.21.1")
+    failSilently.set(false)
 }

@@ -12,7 +12,7 @@ import org.geysermc.floodgate.mod.pluginmessage.payloads.TransferPayload;
 public class NeoForgePluginMessageRegistration implements PluginMessageRegistration {
 
     @Setter
-    private static PayloadRegistrar registrar;
+    private PayloadRegistrar registrar;
 
     @Override
     public void register(PluginMessageChannel channel) {

@@ -64,7 +64,11 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
     }
 
     private void onRegisterPackets(final RegisterPayloadHandlersEvent event) {
-        NeoForgePluginMessageRegistration.setRegistrar(event.registrar("floodgate").optional());
+        // Set the registrar once we're given it - NeoForgePluginMessageRegistration was created earlier in NeoForgePlatformModule
+        NeoForgePluginMessageRegistration pluginMessageRegistration = injector.getInstance(NeoForgePluginMessageRegistration.class);
+        pluginMessageRegistration.setRegistrar(event.registrar("floodgate").optional());
+
+        // We can now trigger the registering of our plugin message channels
         enable(new PluginMessageModule());
     }
 

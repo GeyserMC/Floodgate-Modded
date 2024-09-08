@@ -1,6 +1,7 @@
 package org.geysermc.floodgate.platform.neoforge.module;
 
 import com.google.inject.Provides;
+import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import org.geysermc.floodgate.core.platform.listener.ListenerRegistration;
@@ -14,6 +15,16 @@ import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMess
 
 public class NeoForgePlatformModule extends ModPlatformModule {
 
+    @Override
+    protected void configure() {
+        super.configure();
+
+        // We retrieve using NeoForgePluginMessageRegistration.class from our the mod class.
+        // We do this to ensure that injector#getInstance with either class returns the same singleton
+        bind(PluginMessageRegistration.class).to(NeoForgePluginMessageRegistration.class).in(Scopes.SINGLETON);
+        bind(NeoForgePluginMessageRegistration.class).toInstance(new NeoForgePluginMessageRegistration());
+    }
+
     @Provides
     @Singleton
     public ListenerRegistration<ModEventListener> listenerRegistration() {
@@ -24,12 +35,6 @@ public class NeoForgePlatformModule extends ModPlatformModule {
     @Singleton
     public PluginMessageUtils pluginMessageUtils() {
         return new NeoForgePluginMessageUtils();
-    }
-
-    @Provides
-    @Singleton
-    public PluginMessageRegistration pluginMessageRegister() {
-        return new NeoForgePluginMessageRegistration();
     }
 
     @Provides

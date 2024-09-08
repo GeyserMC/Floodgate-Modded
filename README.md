@@ -1,5 +1,5 @@
 # Floodgate-Modded
-Fabric/NeoForge ports of the hybrid mode plugin to allow for connections from Geyser to join online mode servers. 
+Fabric and NeoForge ports of the hybrid mode plugin to allow for connections from Geyser to join online mode servers. 
 
 Hybrid mode mod to allow for connections from Geyser to join online mode servers.
 Geyser is an open collaboration project by CubeCraft Games.

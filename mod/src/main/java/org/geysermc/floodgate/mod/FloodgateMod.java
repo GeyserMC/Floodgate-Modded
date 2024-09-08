@@ -8,7 +8,6 @@ import net.minecraft.server.MinecraftServer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.FloodgatePlatform;
-import org.geysermc.floodgate.mod.inject.ModInjector;
 import org.geysermc.floodgate.mod.module.ModAddonModule;
 import org.geysermc.floodgate.mod.module.ModListenerModule;
 
@@ -24,7 +23,6 @@ public abstract class FloodgateMod {
 
     protected void init(Module... modules) {
         INSTANCE = this;
-        ModInjector.setInstance(new ModInjector());
         injector = Guice.createInjector(modules);
         platform = injector.getInstance(FloodgatePlatform.class);
     }

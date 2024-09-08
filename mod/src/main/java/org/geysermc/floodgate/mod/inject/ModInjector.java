@@ -1,10 +1,13 @@
 package org.geysermc.floodgate.mod.inject;
 
 import com.google.inject.Inject;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.inject.CommonPlatformInjector;
@@ -12,8 +15,7 @@ import org.geysermc.floodgate.core.inject.CommonPlatformInjector;
 @RequiredArgsConstructor
 public final class ModInjector extends CommonPlatformInjector {
 
-    @Setter @Getter
-    private static ModInjector instance;
+    public static ModInjector INSTANCE = new ModInjector();
 
     @Getter private final boolean injected = true;
 

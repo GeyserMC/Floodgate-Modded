@@ -5,9 +5,12 @@ architectury {
 
 provided("com.google.guava", "failureaccess")
 
+// Used to extend runtime/compile classpaths
 val common: Configuration by configurations.creating
-// Without this, the mixin config isn't read properly with the runServer neoforge task
+// Needed to read mixin config in the runServer task, and for the architectury transformer
+// (e.g. the @ExpectPlatform annotation)
 val developmentNeoForge: Configuration = configurations.getByName("developmentNeoForge")
+// Our custom transitive include configuration
 val includeTransitive: Configuration = configurations.getByName("includeTransitive")
 
 configurations {
@@ -25,7 +28,9 @@ dependencies {
     }
 
     neoForge(libs.neoforge)
+    // "namedElements" configuration should be used to depend on different loom projects
     common(project(":mod", configuration = "namedElements")) { isTransitive = false }
+    // Bundle transformed classes of the common module for production mod jar
     shadow(project(path = ":mod", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
     includeTransitive(libs.floodgate.core)

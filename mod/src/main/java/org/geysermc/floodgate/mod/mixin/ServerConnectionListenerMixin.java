@@ -20,6 +20,6 @@ public abstract class ServerConnectionListenerMixin {
 
     @Inject(method = "startTcpServerListener", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     public void floodgate$onChannelAdd(InetAddress address, int port, CallbackInfo ci) {
-        ModInjector.getInstance().injectClient(this.channels.get(this.channels.size() - 1));
+        ModInjector.INSTANCE.injectClient(this.channels.get(this.channels.size() - 1));
     }
 }

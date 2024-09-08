@@ -35,7 +35,7 @@ public final class FabricFloodgateMod extends FloodgateMod implements ModInitial
 
         ServerLifecycleEvents.SERVER_STARTED.register(this::enable);
 
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+        if (isClient()) {
             ClientLifecycleEvents.CLIENT_STOPPING.register($ -> this.disable());
         } else {
             ServerLifecycleEvents.SERVER_STOPPING.register($ -> this.disable());

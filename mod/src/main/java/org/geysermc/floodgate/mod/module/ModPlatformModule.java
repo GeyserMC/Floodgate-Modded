@@ -48,7 +48,7 @@ public abstract class ModPlatformModule extends AbstractModule {
     @Provides
     @Singleton
     public CommonPlatformInjector platformInjector() {
-        return ModInjector.getInstance();
+        return ModInjector.INSTANCE;
     }
 
     @Provides

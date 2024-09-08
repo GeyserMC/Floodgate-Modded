@@ -7,18 +7,18 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
-// These are all provided by Minecraft - don't include these.
+// These are all provided by Minecraft/server platforms
 provided("com.google.code.gson", "gson")
 provided("org.slf4j", ".*")
+provided("com.google.guava", "guava")
+provided("org.ow2.asm", "asm")
 provided("com.nukkitx.fastutil", ".*")
 
 // these we just don't want to include
 provided("org.checkerframework", ".*")
 provided("com.google.errorprone", ".*")
 provided("com.github.spotbugs", "spotbugs-annotations")
-provided("com.google.guava", "guava")
 provided("com.google.code.findbugs", ".*")
-provided("org.ow2.asm", "asm")
 
 // cloud-fabric/cloud-neoforge jij's all cloud depends already
 provided("org.incendo", ".*")

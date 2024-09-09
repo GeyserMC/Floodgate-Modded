@@ -11,7 +11,7 @@ jobs:
           setup-java_java-version: 21
 
       - name: Build Floodgate-Modded
-        uses: ./gradlew build
+        run: ./gradlew build
 
       - name: Publish to Modrinth
         if: ${{ success() && github.repository == 'GeyserMC/Floodgate-Modded' && github.ref_name == 'master' }}

@@ -1,5 +1,6 @@
 [versions]
 geyser = "2.2.3-SNAPSHOT"
+blossom = "1.2.0"
 indra = "3.1.3"
 shadow = "8.1.1"
 architectury-plugin = "3.4-SNAPSHOT"
@@ -59,4 +60,5 @@ neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge
 
 [plugins]
 lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+blossom = { id = "net.kyori.blossom", version.ref = "blossom"}
 indra = { id = "net.kyori.indra", version.ref = "indra" }

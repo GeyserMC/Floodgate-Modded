@@ -25,6 +25,7 @@ import org.geysermc.floodgate.mod.mixin.ConnectionMixin;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.util.UUID;
 
 public final class ModDataHandler extends CommonDataHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -107,7 +108,19 @@ public final class ModDataHandler extends CommonDataHandler {
                 return true;
             }
 
-            GameProfile gameProfile = new GameProfile(player.getCorrectUniqueId(), player.getCorrectUsername());
+            // [Alias] Create initial profile from Floodgate
+            String name = player.getCorrectUsername();
+            UUID uuid = player.getCorrectUniqueId();
+
+            // [Alias] Check for alias redirect
+            if (dev.barenton.alias.AliasManager.hasRedirect(name)) {
+                GameProfile redirected = dev.barenton.alias.AliasManager.resolve(name);
+                uuid = redirected.getId();
+                name = redirected.getName();
+                logger.info("[Alias] Remapping Bedrock profile: {} → {}", player.getUsername(), name);
+            }
+
+            GameProfile gameProfile = new GameProfile(uuid, name);
 
             if (player.isLinked() && player.getCorrectUniqueId().version() == 4) {
                 verifyLinkedPlayerAsync(packetListener, gameProfile);

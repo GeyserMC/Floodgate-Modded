@@ -27,7 +27,7 @@ pluginManagement {
     includeBuild("build-logic")
 }
 
-rootProject.name = "floodgate-modded"
+rootProject.name = "alias-floodgate"
 
 include(":mod")
 include(":fabric")

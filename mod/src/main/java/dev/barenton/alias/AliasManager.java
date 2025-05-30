@@ -12,8 +12,7 @@ public class AliasManager {
     // Eventually we have to use Alias as a dependency or something...
     // We're fine for now.
     private static final Map<String, GameProfile> profileRedirects = new HashMap<>();
-    private static final Path PROFILE_PATH = Paths.get("config", "alias_profiles.json");
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Path PROFILE_PATH = Paths.get("config", "aliases.json");
 
     /** Resolves a username to a fully remapped GameProfile (UUID + name) */
     public static GameProfile resolve(String username) {
@@ -45,7 +44,7 @@ public class AliasManager {
                     } catch (IllegalArgumentException ignored) {}
                 }
             } catch (IOException e) {
-                System.err.println("[Alias] Failed to load alias_profiles.json: " + e);
+                System.err.println("[Alias] Failed to load aliases.json: " + e);
             }
         }
     }

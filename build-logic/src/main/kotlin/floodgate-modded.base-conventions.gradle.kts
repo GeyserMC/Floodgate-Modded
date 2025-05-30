@@ -25,7 +25,7 @@ tasks {
         filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml")) {
             expand(
                 "id" to "floodgate",
-                "name" to "Floodgate",
+                "name" to "Alias-Floodgate",
                 "version" to project.version,
                 "description" to project.description,
                 "url" to "https://geysermc.org",

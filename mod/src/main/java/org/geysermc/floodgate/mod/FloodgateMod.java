@@ -26,7 +26,7 @@ public abstract class FloodgateMod {
     }
 
     protected void enable(MinecraftServer server) {
-        long ctm = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
         // Stupid hack, see the class for more information
         // This can probably be Guice-i-fied but that is beyond me
@@ -40,9 +40,9 @@ public abstract class FloodgateMod {
             started = true;
         }
 
-        long endCtm = System.currentTimeMillis();
+        long duration = System.currentTimeMillis() - startTime;
         injector.getInstance(FloodgateLogger.class)
-                .translatedInfo("floodgate.core.finish", endCtm - ctm);
+                .translatedInfo("floodgate.core.finish", duration);
     }
 
     protected void disable() {

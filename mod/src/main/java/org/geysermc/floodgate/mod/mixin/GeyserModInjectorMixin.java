@@ -20,6 +20,6 @@ public class GeyserModInjectorMixin {
 
     @Inject(method = "initializeLocalChannel0", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     public void floodgate$onChannelAdd(GeyserBootstrap bootstrap, CallbackInfo ci) {
-        ModInjector.INSTANCE.injectClient(this.allServerChannels.get(this.allServerChannels.size() - 1));
+        ModInjector.INSTANCE.injectClient(this.allServerChannels.getLast());
     }
 }

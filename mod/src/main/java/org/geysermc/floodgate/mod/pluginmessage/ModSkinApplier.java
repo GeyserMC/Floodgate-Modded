@@ -4,6 +4,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +15,7 @@ import org.geysermc.floodgate.mod.MinecraftServerHolder;
 import org.geysermc.floodgate.mod.mixin.ChunkMapMixin;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.geysermc.floodgate.api.event.skin.SkinApplyEvent.SkinData;
 
@@ -21,38 +23,53 @@ public final class ModSkinApplier implements SkinApplier {
 
     @Override
     public void applySkin(@NonNull FloodgatePlayer floodgatePlayer, @NonNull SkinData skinData) {
-        MinecraftServerHolder.get().execute(() -> {
-            ServerPlayer bedrockPlayer = MinecraftServerHolder.get().getPlayerList()
-                    .getPlayer(floodgatePlayer.getCorrectUniqueId());
+        MinecraftServer server = MinecraftServerHolder.get();
+
+        server.execute(() -> {
+            ServerPlayer bedrockPlayer = server.getPlayerList().getPlayer(floodgatePlayer.getCorrectUniqueId());
             if (bedrockPlayer == null) {
-                // Disconnected probably?
+                // Player has likely disconnected
                 return;
             }
 
-            // Apply the new skin internally
+            String TEXTURE_KEY = "textures";
+
+            // === Step 1: Update the internal GameProfile with the new skin ===
             PropertyMap properties = bedrockPlayer.getGameProfile().getProperties();
+            properties.removeAll(TEXTURE_KEY);
+            properties.put(TEXTURE_KEY, new Property(TEXTURE_KEY, skinData.value(), skinData.signature()));
 
-            properties.removeAll("textures");
-            properties.put("textures", new Property("textures", skinData.value(), skinData.signature()));
+            // === Step 2: Get the entity tracking data ===
+            ServerLevel level = (ServerLevel) bedrockPlayer.level;
+            ChunkMap chunkMap = level.getChunkSource().chunkMap;
+            ChunkMap.TrackedEntity trackedEntity = ((ChunkMapMixin) chunkMap).getEntityMap().get(bedrockPlayer.getId());
 
-            ChunkMap tracker = ((ServerLevel) bedrockPlayer.level).getChunkSource().chunkMap;
-            ChunkMap.TrackedEntity entry = ((ChunkMapMixin) tracker).getEntityMap().get(bedrockPlayer.getId());
-            // Skin is applied - now it's time to refresh the player for everyone.
-            for (ServerPlayer otherPlayer : MinecraftServerHolder.get().getPlayerList().getPlayers()) {
-                boolean samePlayer = otherPlayer == bedrockPlayer;
-                if (!samePlayer) {
-                    // TrackedEntity#broadcastRemoved doesn't actually remove them from seenBy
-                    entry.removePlayer(otherPlayer);
+            if (trackedEntity == null) {
+                // Not currently tracked; nothing to update
+                return;
+            }
+
+            // === Step 3: Send update packets to all players ===
+            List<ServerPlayer> players = server.getPlayerList().getPlayers();
+            ClientboundPlayerInfoRemovePacket removePacket =
+                new ClientboundPlayerInfoRemovePacket(Collections.singletonList(bedrockPlayer.getUUID()));
+            ClientboundPlayerInfoUpdatePacket addPacket =
+                ClientboundPlayerInfoUpdatePacket.createPlayerInitializing(Collections.singletonList(bedrockPlayer));
+
+            for (ServerPlayer otherPlayer : players) {
+                boolean isSelf = otherPlayer == bedrockPlayer;
+
+                if (!isSelf) {
+                    // Ensure they no longer track this player before reinitializing
+                    trackedEntity.removePlayer(otherPlayer);
                 }
 
-                otherPlayer.connection.send(new ClientboundPlayerInfoRemovePacket(Collections.singletonList(bedrockPlayer.getUUID())));
-                otherPlayer.connection.send(ClientboundPlayerInfoUpdatePacket.createPlayerInitializing(Collections.singletonList(bedrockPlayer)));
-                if (samePlayer) {
-                    continue;
-                }
+                otherPlayer.connection.send(removePacket);
+                otherPlayer.connection.send(addPacket);
 
-                if (bedrockPlayer.level == otherPlayer.level) {
-                    entry.updatePlayer(otherPlayer);
+                // Only update if the players are in the same world
+                if (!isSelf && otherPlayer.level == level) {
+                    trackedEntity.updatePlayer(otherPlayer);
                 }
             }
         });

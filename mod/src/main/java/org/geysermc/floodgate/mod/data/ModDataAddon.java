@@ -13,6 +13,8 @@ import org.geysermc.floodgate.core.player.FloodgateHandshakeHandler;
 import org.geysermc.floodgate.core.util.Utils;
 
 public final class ModDataAddon implements InjectorAddon {
+    private static final String HANDLER_NAME = "floodgate_data_handler";
+
     @Inject private FloodgateHandshakeHandler handshakeHandler;
     @Inject private FloodgateConfig config;
     @Inject private SimpleFloodgateApi api;
@@ -33,7 +35,7 @@ public final class ModDataAddon implements InjectorAddon {
     @Override
     public void onInject(Channel channel, boolean toServer) {
         channel.pipeline().addBefore(
-                packetHandlerName, "floodgate_data_handler",
+                packetHandlerName, HANDLER_NAME,
                 new ModDataHandler(handshakeHandler, config, kickMessageAttribute, logger)
         );
     }
@@ -48,7 +50,7 @@ public final class ModDataAddon implements InjectorAddon {
 
     @Override
     public void onRemoveInject(Channel channel) {
-        Utils.removeHandler(channel.pipeline(), "floodgate_data_handler");
+        Utils.removeHandler(channel.pipeline(), HANDLER_NAME);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package org.geysermc.floodgate.mod.data;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.logging.LogUtils;
+import dev.barenton.alias.AliasManager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
@@ -26,9 +26,23 @@ import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public final class ModDataHandler extends CommonDataHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
+
+    // Pipeline handler names used for inserting/removing handlers
+    private static final String SPLITTER_NAME = "splitter";
+    private static final String FLOODGATE_BLOCKER_NAME = "floodgate_packet_blocker";
+    private static final String PACKET_HANDLER_NAME = "packet_handler";
+
+    // add to your class
+    private static final ExecutorService TEXTURE_EXECUTOR = Executors.newCachedThreadPool(r -> {
+        Thread t = new Thread(r, "Bedrock Linked Player Texture Download");
+        t.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));
+        return t;
+    });
 
     private final FloodgateLogger logger;
     private Connection networkManager;
@@ -62,14 +76,16 @@ public final class ModDataHandler extends CommonDataHandler {
         if (getKickMessage() != null) {
             // we also have to keep this handler if we want to kick then with a disconnect message
             return false;
-        } else if (player == null) {
-            // player is not a Floodgate player
+        }
+
+        if (player == null) {
+            // Player is connecting on Java Edition
             return true;
         }
 
         if (result.getResultType() == FloodgateHandshakeHandler.ResultType.SUCCESS) {
-            logger.info("Floodgate player who is logged in as {} {} joined",
-                    player.getCorrectUsername(), player.getCorrectUniqueId());
+            logger.info("[Alias-Floodgate] {} is connecting...",
+                    player.getCorrectUsername());
         }
 
         // Handler will be removed after the login hello packet is handled
@@ -79,8 +95,8 @@ public final class ModDataHandler extends CommonDataHandler {
     @Override
     protected boolean channelRead(Object packet) {
         if (packet instanceof ClientIntentionPacket intentionPacket) {
-            ctx.pipeline().addAfter("splitter", "floodgate_packet_blocker", blocker);
-            networkManager = (Connection) ctx.channel().pipeline().get("packet_handler");
+            ctx.pipeline().addAfter(SPLITTER_NAME, FLOODGATE_BLOCKER_NAME, blocker);
+            networkManager = (Connection) ctx.channel().pipeline().get(PACKET_HANDLER_NAME);
             handle(packet, intentionPacket.hostName());
             return false;
         }
@@ -88,77 +104,67 @@ public final class ModDataHandler extends CommonDataHandler {
     }
 
     private boolean checkAndHandleLogin(Object packet) {
-        if (packet instanceof ServerboundHelloPacket) {
-            String kickMessage = getKickMessage();
-            if (kickMessage != null) {
-                Component message = Component.nullToEmpty(kickMessage);
-                // If possible, disconnect using the "proper" packet listener; otherwise there's no proper disconnect message
-                if (networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl loginPacketListener) {
-                    loginPacketListener.disconnect(message);
-                } else {
-                    networkManager.disconnect(message);
-                }
-                return true;
-            }
+        if (!(packet instanceof ServerboundHelloPacket)) {
+            return false;
+        }
 
-            // we have to fake the offline player (login) cycle
-            if (!(networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl packetListener)) {
-                // player is not in the login state, abort
-                ctx.pipeline().remove(this);
-                return true;
-            }
-
-            // [Alias] Create initial profile from Floodgate
-            String name = player.getCorrectUsername();
-            UUID uuid = player.getCorrectUniqueId();
-
-            // [Alias] Check for alias redirect
-            if (dev.barenton.alias.AliasManager.hasRedirect(name)) {
-                GameProfile redirected = dev.barenton.alias.AliasManager.resolve(name);
-                uuid = redirected.getId();
-                name = redirected.getName();
-                logger.info("[Alias] Remapping Bedrock profile: {} → {}", player.getUsername(), name);
-            }
-
-            GameProfile gameProfile = new GameProfile(uuid, name);
-
-            if (player.isLinked() && player.getCorrectUniqueId().version() == 4) {
-                verifyLinkedPlayerAsync(packetListener, gameProfile);
+        String kickMessage = getKickMessage();
+        if (kickMessage != null) {
+            Component message = Component.nullToEmpty(kickMessage);
+            // If possible, disconnect using the "proper" packet listener; otherwise there's no proper disconnect message
+            if (networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl loginPacketListener) {
+                loginPacketListener.disconnect(message);
             } else {
-                packetListener.startClientVerification(gameProfile);
+                networkManager.disconnect(message);
             }
+            return true;
+        }
 
+        // we have to fake the offline player (login) cycle
+        if (!(networkManager.getPacketListener() instanceof ServerLoginPacketListenerImpl packetListener)) {
+            // player is not in the login state, abort
             ctx.pipeline().remove(this);
             return true;
         }
-        return false;
+
+        GameProfile gameProfile = getProfile(player, logger);
+
+        if (player.isLinked() && player.getCorrectUniqueId().version() == 4) {
+            verifyLinkedPlayerAsync(packetListener, gameProfile);
+        } else {
+            packetListener.startClientVerification(gameProfile);
+        }
+
+        ctx.pipeline().remove(this);
+        return true;
     }
 
-    /**
-     * Starts a new thread that fetches the linked player's textures,
-     * and then starts client verification with the more accurate game profile.
-     *
-     * @param packetListener the login packet listener for this connection
-     * @param gameProfile the player's initial profile. it will NOT be mutated.
-     */
-    private void verifyLinkedPlayerAsync(ServerLoginPacketListenerImpl packetListener, GameProfile gameProfile) {
-        Thread texturesThread = new Thread("Bedrock Linked Player Texture Download") {
-            @Override
-            public void run() {
-                GameProfile effectiveProfile = gameProfile;
-                try {
-                    MinecraftSessionService service = MinecraftServerHolder.get().getSessionService();
-                    effectiveProfile = service.fetchProfile(effectiveProfile.getId(), true).profile();
-                } catch (Exception e) {
-                    LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.getName(), e);
-                }
-                packetListener.startClientVerification(effectiveProfile);
+    private GameProfile getProfile(FloodgatePlayer player, FloodgateLogger logger) {
+        String name = player.getCorrectUsername();
+        UUID uuid = player.getCorrectUniqueId();
+
+        if (AliasManager.hasRedirect(name)) {
+            GameProfile redirected = AliasManager.resolve(name);
+            logger.info("[Alias] Remapping Bedrock profile: {} → {}", name, redirected.getName());
+            return redirected;
+        }
+        return new GameProfile(uuid, name);
+    }
+
+    private void verifyLinkedPlayerAsync(ServerLoginPacketListenerImpl listener, GameProfile initial) {
+        TEXTURE_EXECUTOR.submit(() -> {
+            GameProfile effective = initial;
+            try {
+                effective = MinecraftServerHolder.get()
+                        .getSessionService()
+                        .fetchProfile(initial.getId(), true)
+                        .profile();
+            } catch (Exception e) {
+                LOGGER.error("Unable to get Bedrock linked player textures for {}", initial.getName(), e);
             }
-        };
-        texturesThread.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));
-        texturesThread.start();
+            listener.startClientVerification(effective);
+        });
     }
-
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

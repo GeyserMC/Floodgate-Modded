@@ -22,23 +22,25 @@ public final class FabricFloodgateMod extends FloodgateMod implements ModInitial
 
     @Override
     public void onInitialize() {
-        container = FabricLoader.getInstance().getModContainer("floodgate").orElseThrow();
+        FabricLoader loader = FabricLoader.getInstance();
+        container = loader.getModContainer("floodgate").orElseThrow();
+
+        // Initialize core modules
         init(
-            new ServerCommonModule(
-                    FabricLoader.getInstance().getConfigDir().resolve("floodgate"),
-                    new ModTemplateReader()
-            ),
+            new ServerCommonModule(loader.getConfigDir().resolve("floodgate"), new ModTemplateReader()),
             new FabricPlatformModule(),
             new FabricCommandModule(),
             new PluginMessageModule()
         );
 
+        // Hook into server lifecycle events
         ServerLifecycleEvents.SERVER_STARTED.register(this::enable);
 
-        if (isClient()) {
-            ClientLifecycleEvents.CLIENT_STOPPING.register($ -> this.disable());
+        // Register appropriate shutdown hook depending on environment
+        if (loader.getEnvironmentType() == EnvType.CLIENT) {
+            ClientLifecycleEvents.CLIENT_STOPPING.register($ -> disable());
         } else {
-            ServerLifecycleEvents.SERVER_STOPPING.register($ -> this.disable());
+            ServerLifecycleEvents.SERVER_STOPPING.register($ -> disable());
         }
     }
 

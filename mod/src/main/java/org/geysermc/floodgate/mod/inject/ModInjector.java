@@ -1,51 +1,60 @@
 package org.geysermc.floodgate.mod.inject;
 
 import com.google.inject.Inject;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelInitializer;
+import io.netty.channel.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.inject.CommonPlatformInjector;
 
+/**
+ * Handles Floodgate injection logic for client-side Netty channels.
+ * This version is streamlined for single-time injection with basic lifecycle handling.
+ */
 @RequiredArgsConstructor
 public final class ModInjector extends CommonPlatformInjector {
+    public static final ModInjector INSTANCE = new ModInjector();
 
-    public static ModInjector INSTANCE = new ModInjector();
+    @Getter
+    private final boolean injected = true;
 
-    @Getter private final boolean injected = true;
-
-    @Inject private FloodgateLogger logger;
+    @Inject
+    private FloodgateLogger logger;
 
     @Override
-    public void inject() throws Exception {
-        //no-op
+    public void inject() {
+        // No-op (not used for this platform)
     }
 
+    /**
+     * Injects Floodgate into the Netty channel if not already injected.
+     *
+     * @param future the Netty ChannelFuture for the connection
+     */
     public void injectClient(ChannelFuture future) {
-        if (future.channel().pipeline().names().contains("floodgate-init")) {
-            logger.debug("Tried to inject twice!");
+        final String PIPELINE_NAME = "floodgate-init";
+        Channel channel = future.channel();
+        ChannelPipeline pipeline = channel.pipeline();
+
+        if (pipeline.names().contains(PIPELINE_NAME)) {
+            logger.debug("Floodgate injection attempted twice; skipping.");
             return;
         }
 
-        future.channel().pipeline().addFirst("floodgate-init", new ChannelInboundHandlerAdapter() {
+        pipeline.addFirst(PIPELINE_NAME, new ChannelInboundHandlerAdapter() {
             @Override
             public void channelRead(@NonNull ChannelHandlerContext ctx, @NonNull Object msg) throws Exception {
                 super.channelRead(ctx, msg);
 
-                if (!(msg instanceof Channel channel)) {
-                    return;
-                }
+                if (!(msg instanceof Channel innerChannel)) return;
 
-                channel.pipeline().addLast(new ChannelInitializer<>() {
+                innerChannel.pipeline().addLast(new ChannelInitializer<>() {
                     @Override
                     protected void initChannel(@NonNull Channel channel) {
                         injectAddonsCall(channel, false);
                         addInjectedClient(channel);
+
                         channel.closeFuture().addListener(listener -> {
                             channelClosedCall(channel);
                             removeInjectedClient(channel);
@@ -57,8 +66,7 @@ public final class ModInjector extends CommonPlatformInjector {
     }
 
     @Override
-    public void removeInjection() throws Exception {
-        //no-op
+    public void removeInjection() {
+        // No-op (not required for this implementation)
     }
-
 }

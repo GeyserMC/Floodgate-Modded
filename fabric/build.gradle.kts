@@ -38,7 +38,7 @@ dependencies {
 
 tasks {
     remapJar {
-        archiveBaseName.set("floodgate-fabric")
+        archiveBaseName.set("alias-floodgate-fabric")
     }
 
     modrinth {

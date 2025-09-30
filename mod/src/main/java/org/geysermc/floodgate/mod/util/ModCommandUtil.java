@@ -1,10 +1,10 @@
 package org.geysermc.floodgate.mod.util;
 
-import com.mojang.authlib.GameProfile;
 import lombok.Setter;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.UserWhiteListEntry;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.FloodgateApi;
@@ -42,13 +42,13 @@ public final class ModCommandUtil extends CommandUtil {
         }
         ServerPlayer player = stack.getPlayer();
         //Locale locale = PlayerLocales.locale(player);
-        return new UserAudience.PlayerAudience(player.getUUID(), player.getGameProfile().getName(), "en_US",
+        return new UserAudience.PlayerAudience(player.getUUID(), player.getGameProfile().name(), "en_US",
                 stack, this, true);
     }
 
     @Override
     protected String getUsernameFromSource(@NonNull Object source) {
-        return ((ServerPlayer) source).getGameProfile().getName();
+        return ((ServerPlayer) source).getGameProfile().name();
     }
 
     @Override
@@ -99,15 +99,15 @@ public final class ModCommandUtil extends CommandUtil {
 
     @Override
     public boolean whitelistPlayer(UUID uuid, String username) {
-        GameProfile profile = new GameProfile(uuid, username);
-        MinecraftServerHolder.get().getPlayerList().getWhiteList().add(new UserWhiteListEntry(profile));
+        NameAndId nameAndId = new NameAndId(uuid, username);
+        MinecraftServerHolder.get().getPlayerList().getWhiteList().add(new UserWhiteListEntry(nameAndId));
         return true;
     }
 
     @Override
     public boolean removePlayerFromWhitelist(UUID uuid, String username) {
-        GameProfile profile = new GameProfile(uuid, username);
-        MinecraftServerHolder.get().getPlayerList().getWhiteList().remove(profile);
+        NameAndId nameAndId = new NameAndId(uuid, username);
+        MinecraftServerHolder.get().getPlayerList().getWhiteList().remove(nameAndId);
         return true;
     }
 }

@@ -11,7 +11,7 @@
     "FloodgateUtilMixin",
     "GeyserModInjectorMixin",
     "ServerConnectionListenerMixin",
-      "PlayerAccessor"
+     "PlayerAccessor"
   ],
   "plugin": "org.geysermc.floodgate.mod.util.ModMixinConfigPlugin",
   "injectors": {

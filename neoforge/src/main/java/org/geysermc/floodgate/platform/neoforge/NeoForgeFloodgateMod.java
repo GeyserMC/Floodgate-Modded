@@ -39,7 +39,7 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
 
         modEventBus.addListener(this::onRegisterPackets);
         NeoForge.EVENT_BUS.addListener(this::onServerStarted);
-        if (FMLLoader.getDist().isClient()) {
+        if (FMLLoader.getCurrent().getDist().isClient()) {
             NeoForge.EVENT_BUS.addListener(this::onClientStop);
         } else {
             NeoForge.EVENT_BUS.addListener(this::onServerStop);
@@ -69,12 +69,12 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
 
     @Override
     public @Nullable Path resourcePath(String file) {
-        return container.getModInfo().getOwningFile().getFile().findResource(file);
+        return container.getModInfo().getOwningFile().getFile().getContents().findFile(file).map(Path::of).orElse(null);
     }
 
     @Override
     public boolean isClient() {
-        return FMLLoader.getDist().isClient();
+        return FMLLoader.getCurrent().getDist().isClient();
     }
 
 }

@@ -20,19 +20,19 @@ public class NeoForgePluginMessageRegistration implements PluginMessageRegistrat
             case "floodgate:form" ->
                     registrar.playBidirectional(FormPayload.TYPE, FormPayload.STREAM_CODEC, (payload, context) ->
                             channel.handleServerCall(payload.data(), context.player().getUUID(),
-                                    context.player().getGameProfile().getName()));
+                                    context.player().getGameProfile().name()));
             case "floodgate:packet" ->
                     registrar.playBidirectional(PacketPayload.TYPE, PacketPayload.STREAM_CODEC, (payload, context) ->
                             channel.handleServerCall(payload.data(), context.player().getUUID(),
-                                    context.player().getGameProfile().getName()));
+                                    context.player().getGameProfile().name()));
             case "floodgate:skin" ->
                     registrar.playBidirectional(SkinPayload.TYPE, SkinPayload.STREAM_CODEC, (payload, context) ->
                             channel.handleServerCall(payload.data(), context.player().getUUID(),
-                                    context.player().getGameProfile().getName()));
+                                    context.player().getGameProfile().name()));
             case "floodgate:transfer" ->
                     registrar.playBidirectional(TransferPayload.TYPE, TransferPayload.STREAM_CODEC, (payload, context) ->
                             channel.handleServerCall(payload.data(), context.player().getUUID(),
-                                    context.player().getGameProfile().getName()));
+                                    context.player().getGameProfile().name()));
             default -> throw new IllegalArgumentException("unknown channel: " + channel);
         }
     }

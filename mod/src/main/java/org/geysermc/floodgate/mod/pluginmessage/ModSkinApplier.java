@@ -1,5 +1,8 @@
 package org.geysermc.floodgate.mod.pluginmessage;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
@@ -12,6 +15,7 @@ import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.floodgate.core.skin.SkinApplier;
 import org.geysermc.floodgate.mod.MinecraftServerHolder;
 import org.geysermc.floodgate.mod.mixin.ChunkMapMixin;
+import org.geysermc.floodgate.mod.mixin.PlayerAccessor;
 
 import java.util.Collections;
 
@@ -30,10 +34,10 @@ public final class ModSkinApplier implements SkinApplier {
             }
 
             // Apply the new skin internally
-            PropertyMap properties = bedrockPlayer.getGameProfile().getProperties();
-
-            properties.removeAll("textures");
+            Multimap<String, Property> properties = MultimapBuilder.hashKeys().arrayListValues().build();
             properties.put("textures", new Property("textures", skinData.value(), skinData.signature()));
+            ((PlayerAccessor) bedrockPlayer).setGameProfile(new GameProfile(bedrockPlayer.getGameProfile().id(),
+                bedrockPlayer.getGameProfile().name(), new PropertyMap(properties)));
 
             ChunkMap tracker = ((ServerLevel) bedrockPlayer.level).getChunkSource().chunkMap;
             ChunkMap.TrackedEntity entry = ((ChunkMapMixin) tracker).getEntityMap().get(bedrockPlayer.getId());

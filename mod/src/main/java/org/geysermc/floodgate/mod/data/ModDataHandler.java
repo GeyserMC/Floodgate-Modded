@@ -25,6 +25,7 @@ import org.geysermc.floodgate.mod.mixin.ConnectionMixin;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.util.Objects;
 
 public final class ModDataHandler extends CommonDataHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -134,10 +135,10 @@ public final class ModDataHandler extends CommonDataHandler {
             public void run() {
                 GameProfile effectiveProfile = gameProfile;
                 try {
-                    MinecraftSessionService service = MinecraftServerHolder.get().getSessionService();
-                    effectiveProfile = service.fetchProfile(effectiveProfile.getId(), true).profile();
+                    MinecraftSessionService service = MinecraftServerHolder.get().services().sessionService();
+                    effectiveProfile = Objects.requireNonNull(service.fetchProfile(effectiveProfile.id(), true)).profile();
                 } catch (Exception e) {
-                    LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.getName(), e);
+                    LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.name(), e);
                 }
                 packetListener.startClientVerification(effectiveProfile);
             }

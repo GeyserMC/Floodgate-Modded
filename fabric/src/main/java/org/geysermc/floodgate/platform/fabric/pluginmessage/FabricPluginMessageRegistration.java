@@ -20,7 +20,7 @@ public class FabricPluginMessageRegistration implements PluginMessageRegistratio
                         ((payload, context) -> channel.handleServerCall(
                                 payload.data(),
                                 context.player().getUUID(),
-                                context.player().getGameProfile().getName())));
+                                context.player().getGameProfile().name())));
             }
             case "floodgate:packet" -> {
                 PayloadTypeRegistry.playC2S().register(PacketPayload.TYPE, PacketPayload.STREAM_CODEC);
@@ -29,7 +29,7 @@ public class FabricPluginMessageRegistration implements PluginMessageRegistratio
                         ((payload, context) -> channel.handleServerCall(
                                 payload.data(),
                                 context.player().getUUID(),
-                                context.player().getGameProfile().getName())));
+                                context.player().getGameProfile().name())));
             }
             case "floodgate:skin" -> {
                 PayloadTypeRegistry.playC2S().register(SkinPayload.TYPE, SkinPayload.STREAM_CODEC);
@@ -38,7 +38,7 @@ public class FabricPluginMessageRegistration implements PluginMessageRegistratio
                         ((payload, context) -> channel.handleServerCall(
                                 payload.data(),
                                 context.player().getUUID(),
-                                context.player().getGameProfile().getName())));
+                                context.player().getGameProfile().name())));
             }
             case "floodgate:transfer" -> {
                 PayloadTypeRegistry.playC2S().register(TransferPayload.TYPE, TransferPayload.STREAM_CODEC);
@@ -47,7 +47,7 @@ public class FabricPluginMessageRegistration implements PluginMessageRegistratio
                         ((payload, context) -> channel.handleServerCall(
                                 payload.data(),
                                 context.player().getUUID(),
-                                context.player().getGameProfile().getName())));
+                                context.player().getGameProfile().name())));
             }
             default -> throw new IllegalArgumentException("unknown channel: " + channel);
         }

@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.mod.FloodgateMod;
@@ -14,6 +14,9 @@ import org.geysermc.floodgate.mod.util.ModTemplateReader;
 import org.geysermc.floodgate.platform.fabric.module.FabricCommandModule;
 import org.geysermc.floodgate.platform.fabric.module.FabricPlatformModule;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class FabricFloodgateMod extends FloodgateMod implements ModInitializer {
@@ -43,8 +46,9 @@ public final class FabricFloodgateMod extends FloodgateMod implements ModInitial
     }
 
     @Override
-    public @Nullable Path resourcePath(String file) {
-        return container.findPath(file).orElse(null);
+    public @NonNull InputStream resourceStream(String file) throws IOException {
+        Path path = container.findPath(file).orElseThrow();
+        return Files.newInputStream(path);
     }
 
     @Override

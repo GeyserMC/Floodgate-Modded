@@ -5,21 +5,16 @@ import org.geysermc.floodgate.mod.FloodgateMod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
 
 public class ModTemplateReader implements TemplateReader {
 
     @Override
     public BufferedReader read(String configName) {
-        Path path = FloodgateMod.INSTANCE.resourcePath(configName);
-        if (path != null) {
-            try {
-                return Files.newBufferedReader(path);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
+        try {
+            return new BufferedReader(new InputStreamReader(FloodgateMod.INSTANCE.resourceStream(configName)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }

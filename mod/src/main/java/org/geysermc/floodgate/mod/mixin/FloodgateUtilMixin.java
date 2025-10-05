@@ -8,8 +8,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Mixins into Floodgate's {@link Utils} class to modify how resources are loaded from the jar.
@@ -23,25 +21,18 @@ public class FloodgateUtilMixin {
     @Redirect(method = "readProperties",
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
     private static InputStream floodgate$redirectInputStream(ClassLoader instance, String string) {
-        Path path = FloodgateMod.INSTANCE.resourcePath(string);
         try {
-            return path == null ? null : Files.newInputStream(path);
+            return FloodgateMod.INSTANCE.resourceStream(string);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Redirect(method = "getGeneratedClassesForAnnotation(Ljava/lang/String;)Ljava/util/Set;",
             at = @At(value = "INVOKE", target = "Ljava/lang/ClassLoader;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
     private static InputStream floodgate$redirectInputStreamAnnotation(ClassLoader instance, String string) {
-        Path path = FloodgateMod.INSTANCE.resourcePath(string);
-
-        if (path == null) {
-            throw new IllegalStateException("Unable to find classes marked by annotation class! " + string);
-        }
-
         try {
-            return Files.newInputStream(path);
+            return FloodgateMod.INSTANCE.resourceStream(string);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

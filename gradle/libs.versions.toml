@@ -22,7 +22,7 @@ fabric-api = "0.133.14+1.21.9"
 fabric-permissions-api = "0.4.1"
 
 # neoforge
-neoforge-version = "21.9.1-beta"
+neoforge-version = "21.9.14-beta"
 
 [libraries]
 floodgate-core = { group = "org.geysermc.floodgate", name = "core", version.ref = "floodgate" }

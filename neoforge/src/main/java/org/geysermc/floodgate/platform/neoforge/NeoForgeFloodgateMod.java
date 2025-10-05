@@ -10,7 +10,7 @@ import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.mod.FloodgateMod;
@@ -19,7 +19,9 @@ import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 @Mod("floodgate")
 public final class NeoForgeFloodgateMod extends FloodgateMod {
@@ -68,8 +70,8 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
     }
 
     @Override
-    public @Nullable Path resourcePath(String file) {
-        return container.getModInfo().getOwningFile().getFile().getContents().findFile(file).map(Path::of).orElse(null);
+    public @NonNull InputStream resourceStream(String file) throws IOException {
+        return Objects.requireNonNull(container.getModInfo().getOwningFile().getFile().getContents().openFile(file));
     }
 
     @Override

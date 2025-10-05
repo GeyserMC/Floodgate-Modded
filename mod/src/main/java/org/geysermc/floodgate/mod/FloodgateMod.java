@@ -4,13 +4,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import net.minecraft.server.MinecraftServer;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.core.FloodgatePlatform;
 import org.geysermc.floodgate.mod.module.ModAddonModule;
 import org.geysermc.floodgate.mod.module.ModListenerModule;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
 
 public abstract class FloodgateMod {
     public static FloodgateMod INSTANCE;
@@ -53,7 +54,7 @@ public abstract class FloodgateMod {
         platform.enable(module);
     }
 
-    public @Nullable abstract Path resourcePath(String file);
+    public abstract @NonNull InputStream resourceStream(String file) throws IOException;
 
     public abstract boolean isClient();
 }

@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.floodgate.core.skin.SkinApplier;
+import org.geysermc.floodgate.mod.FloodgateMod;
 import org.geysermc.floodgate.mod.MinecraftServerHolder;
 import org.geysermc.floodgate.mod.mixin.ChunkMapMixin;
 import org.geysermc.floodgate.mod.mixin.PlayerAccessor;
@@ -25,11 +26,18 @@ public final class ModSkinApplier implements SkinApplier {
 
     @Override
     public void applySkin(@NonNull FloodgatePlayer floodgatePlayer, @NonNull SkinData skinData) {
+        applySkin(floodgatePlayer, skinData, true);
+    }
+
+    public void applySkin(@NonNull FloodgatePlayer floodgatePlayer, @NonNull SkinData skinData, boolean firstTry) {
         MinecraftServerHolder.get().execute(() -> {
             ServerPlayer bedrockPlayer = MinecraftServerHolder.get().getPlayerList()
-                    .getPlayer(floodgatePlayer.getCorrectUniqueId());
+                .getPlayer(floodgatePlayer.getCorrectUniqueId());
             if (bedrockPlayer == null) {
-                // Disconnected probably?
+                if (firstTry) {
+                    // try again later!
+                    FloodgateMod.INSTANCE.schedule(() -> applySkin(floodgatePlayer, skinData, false), 20 * 10);
+                }
                 return;
             }
 

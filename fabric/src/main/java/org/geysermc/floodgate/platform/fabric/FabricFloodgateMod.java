@@ -13,6 +13,7 @@ import org.geysermc.floodgate.mod.FloodgateMod;
 import org.geysermc.floodgate.mod.util.ModTemplateReader;
 import org.geysermc.floodgate.platform.fabric.module.FabricCommandModule;
 import org.geysermc.floodgate.platform.fabric.module.FabricPlatformModule;
+import org.geysermc.floodgate.platform.fabric.util.TaskTimer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,12 +44,18 @@ public final class FabricFloodgateMod extends FloodgateMod implements ModInitial
         } else {
             ServerLifecycleEvents.SERVER_STOPPING.register($ -> this.disable());
         }
+        TaskTimer.register();
     }
 
     @Override
     public @NonNull InputStream resourceStream(String file) throws IOException {
         Path path = container.findPath(file).orElseThrow();
         return Files.newInputStream(path);
+    }
+
+    @Override
+    public void schedule(Runnable runnable, int ticks) {
+        TaskTimer.INSTANCE.runLater(runnable, ticks);
     }
 
     @Override

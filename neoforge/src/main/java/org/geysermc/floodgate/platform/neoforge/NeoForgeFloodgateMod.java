@@ -9,6 +9,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
@@ -18,6 +19,7 @@ import org.geysermc.floodgate.mod.util.ModTemplateReader;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgeCommandModule;
 import org.geysermc.floodgate.platform.neoforge.module.NeoForgePlatformModule;
 import org.geysermc.floodgate.platform.neoforge.pluginmessage.NeoForgePluginMessageRegistration;
+import org.geysermc.floodgate.platform.neoforge.util.TaskTimer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +48,7 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
         } else {
             NeoForge.EVENT_BUS.addListener(this::onServerStop);
         }
+        NeoForge.EVENT_BUS.addListener(ServerTickEvent.Post.class, TaskTimer.INSTANCE::onEndTick);
     }
 
     private void onServerStarted(ServerStartedEvent event) {
@@ -72,6 +75,11 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
     @Override
     public @NonNull InputStream resourceStream(String file) throws IOException {
         return Objects.requireNonNull(container.getModInfo().getOwningFile().getFile().getContents().openFile(file));
+    }
+
+    @Override
+    public void schedule(Runnable runnable, int ticks) {
+        TaskTimer.INSTANCE.runLater(runnable, ticks);
     }
 
     @Override

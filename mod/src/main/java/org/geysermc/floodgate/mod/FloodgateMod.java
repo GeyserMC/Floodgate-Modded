@@ -56,5 +56,7 @@ public abstract class FloodgateMod {
 
     public abstract @NonNull InputStream resourceStream(String file) throws IOException;
 
+    public abstract void schedule(Runnable runnable, int ticks);
+
     public abstract boolean isClient();
 }

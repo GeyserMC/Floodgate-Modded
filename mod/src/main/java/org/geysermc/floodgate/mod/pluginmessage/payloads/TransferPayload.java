@@ -4,12 +4,12 @@ import io.netty.buffer.ByteBufUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public record TransferPayload(byte[] data) implements CustomPacketPayload {
     public static final StreamCodec<FriendlyByteBuf, TransferPayload> STREAM_CODEC = CustomPacketPayload.codec(TransferPayload::write, TransferPayload::new);
-    public static final CustomPacketPayload.Type<TransferPayload> TYPE = new Type<>(ResourceLocation.parse("floodgate:transfer"));
+    public static final CustomPacketPayload.Type<TransferPayload> TYPE = new Type<>(Identifier.parse("floodgate:transfer"));
 
     private TransferPayload(FriendlyByteBuf friendlyByteBuf) {
         this(ByteBufUtil.getBytes(friendlyByteBuf));

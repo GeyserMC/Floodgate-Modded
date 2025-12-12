@@ -1,10 +1,10 @@
 package org.geysermc.floodgate.mod.util.neoforge;
 
-import net.neoforged.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.FMLLoader;
 
 public class ModMixinConfigPluginImpl {
     public static boolean isGeyserLoaded() {
-        return LoadingModList.get().getModFileById("geyser_neoforge") != null;
+        return FMLLoader.getCurrent().getLoadingModList().getModFileById("geyser_neoforge") != null;
     }
 
     public static boolean applyProxyFix() {

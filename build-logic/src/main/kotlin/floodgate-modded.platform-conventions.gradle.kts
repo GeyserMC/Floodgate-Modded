@@ -1,7 +1,7 @@
 plugins {
     id("floodgate-modded.publish-conventions")
     id("architectury-plugin")
-    id("dev.architectury.loom")
+    id("dev.architectury.loom-no-remap")
     id("com.modrinth.minotaur")
 }
 
@@ -36,7 +36,6 @@ configurations {
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.officialMojangMappings())
 
     // These are under our own namespace
     shadow(libs.floodgate.api) { isTransitive = false }
@@ -76,20 +75,13 @@ tasks {
         archiveClassifier.set("shaded")
     }
 
-    remapJar {
-        dependsOn(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile)
-        archiveClassifier.set("")
-        archiveVersion.set("")
-    }
-
     register<Copy>("renameTask") {
-        dependsOn(remapJar)
+        dependsOn(shadowJar)
 
         val modrinthFileName = "${versionName(project)}.jar"
-        val libsFile = remapJar.get().destinationDirectory.get().asFile
+        val libsFile = shadowJar.get().destinationDirectory.get().asFile
 
-        from(remapJar.get().archiveFile)
+        from(shadowJar.get().archiveFile)
         rename { modrinthFileName }
         into(libsFile)
 
@@ -132,7 +124,7 @@ modrinth {
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    uploadFile.set(tasks.remapJar.get().destinationDirectory.get().asFile.resolve("${versionName(project)}.jar"))
+    uploadFile.set(tasks.shadowJar.get().destinationDirectory.get().asFile.resolve("${versionName(project)}.jar"))
     gameVersions.addAll(libs.minecraft.get().version as String)
     failSilently.set(false)
 }

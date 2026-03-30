@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("org.checkerframework", "checker-qual", "3.19.0")
+    compileOnly("org.checkerframework:checker-qual:3.19.0")
 }
 
 indra {
@@ -16,7 +16,7 @@ indra {
     mitLicense()
 
     javaVersions {
-        target(21)
+        target(25)
     }
 }
 
@@ -27,7 +27,7 @@ tasks {
                 "id" to "floodgate",
                 "name" to "Floodgate",
                 "version" to project.version,
-                "description" to project.description as String,
+                "description" to project.description.toString(),
                 "url" to "https://geysermc.org",
                 "author" to "GeyserMC",
                 "minecraft_version" to libs.versions.minecraft.version.get()

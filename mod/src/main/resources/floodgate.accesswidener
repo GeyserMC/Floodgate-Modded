@@ -1,4 +1,4 @@
-accessWidener v1 named
+accessWidener v2 official
 
 # For setting gameprofile and starting connection verification
 accessible method net/minecraft/server/network/ServerLoginPacketListenerImpl startClientVerification (Lcom/mojang/authlib/GameProfile;)V

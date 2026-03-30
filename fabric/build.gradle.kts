@@ -18,10 +18,10 @@ configurations {
 }
 
 dependencies {
-    modImplementation(libs.fabric.loader)
-    modApi(libs.fabric.api)
+    implementation(libs.fabric.loader)
+    api(libs.fabric.api)
     // "namedElements" configuration should be used to depend on different loom projects
-    common(project(":mod", configuration = "namedElements")) { isTransitive = false }
+    common(project(":mod")) { isTransitive = false }
     // Bundle transformed classes of the common module for production mod jar
     shadow(project(path = ":mod", configuration = "transformProductionFabric")) {
         isTransitive = false
@@ -31,13 +31,13 @@ dependencies {
     implementation(libs.floodgate.core)
     implementation(libs.guice)
 
-    modImplementation(libs.cloud.fabric)
+    implementation(libs.cloud.fabric)
     include(libs.cloud.fabric)
     include(libs.fabric.permissions.api)
 }
 
 tasks {
-    remapJar {
+    shadowJar {
         archiveBaseName.set("floodgate-fabric")
     }
 

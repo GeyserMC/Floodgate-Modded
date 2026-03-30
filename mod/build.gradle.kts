@@ -14,8 +14,8 @@ dependencies {
 
     compileOnly(libs.mixin)
     compileOnly(libs.asm)
-    modCompileOnly(libs.geyser.mod) { isTransitive = false }
-    modCompileOnly(libs.geyser.core) { isTransitive = false }
+    compileOnly(libs.geyser.mod) { isTransitive = false }
+    compileOnly(libs.geyser.core) { isTransitive = false }
 
     // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
     compileOnly(libs.fabric.loader)

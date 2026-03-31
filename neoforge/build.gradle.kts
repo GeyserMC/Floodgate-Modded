@@ -49,9 +49,18 @@ tasks {
         }
     }
 
-    shadowJar {
+    named<Jar>("mergeShadowAndJarJar") {
+        from (
+            zipTree( shadowJar.map { it.outputs.files.singleFile } ).matching {
+                exclude("LICENSE")
+            },
+            zipTree( jar.map { it.outputs.files.singleFile } ).matching {
+                include("META-INF/jars/**")
+                include("META-INF/jarjar/**")
+                include("LICENSE")
+            }
+        )
         dependsOn(processResources)
-        // atAccessWideners.add("floodgate.accesswidener")
         archiveBaseName.set("floodgate-neoforge")
     }
 

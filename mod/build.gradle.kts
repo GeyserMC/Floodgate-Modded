@@ -4,7 +4,6 @@ architectury {
 
 loom {
     accessWidenerPath = file("src/main/resources/floodgate.accesswidener")
-    mixin.defaultRefmapName.set("floodgate-refmap.json")
 }
 
 dependencies {
@@ -28,6 +27,10 @@ afterEvaluate {
     }
 
     tasks.named("modrinth").configure {
+        enabled = false
+    }
+
+    tasks.named("mergeShadowAndJarJar").configure {
         enabled = false
     }
 }

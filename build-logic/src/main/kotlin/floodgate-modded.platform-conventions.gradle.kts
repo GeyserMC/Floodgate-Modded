@@ -64,24 +64,34 @@ tasks {
     shadowJar {
         // Mirrors the example fabric project, otherwise tons of dependencies are shaded that shouldn't be
         configurations = listOf(project.configurations.shadow.get())
+        archiveBaseName.set("${project.name}-shaded")
+        mergeServiceFiles()
 
         // Relocate these
         relocate("org.bstats", "org.geysermc.floodgate.shadow.bstats")
         relocate("com.google.inject", "org.geysermc.floodgate.shadow.google.inject")
         relocate("org.yaml", "org.geysermc.floodgate.shadow.org.yaml")
-
-        // The remapped shadowJar is the final desired mod jar
-        archiveVersion.set(project.version.toString())
-        archiveClassifier.set("shaded")
     }
 
-    register<Copy>("renameTask") {
-        dependsOn(shadowJar)
+    // This task combines the output of the "jar" task, which includes JiJ dependencies,
+    // and the shadowJar for the final jar.
+    // thanks bluemap
+    // https://github.com/BlueMap-Minecraft/BlueMap/blob/cfe73115dc4d1bdd97bc659f41364da65a6a2179/implementations/fabric/build.gradle.kts#L93-L107
+    register<Jar>("mergeShadowAndJarJar") {
+        dependsOn( tasks.shadowJar, tasks.jar )
+        // from sources / final name are configured in the respective projects
+        archiveVersion.set("")
+        archiveClassifier.set("")
+    }
+
+    tasks.register<Copy>("renameTask") {
+        val sourceJar = tasks.named<Jar>("mergeShadowAndJarJar")
+        dependsOn(sourceJar)
 
         val modrinthFileName = "${versionName(project)}.jar"
-        val libsFile = shadowJar.get().destinationDirectory.get().asFile
+        val libsFile = sourceJar.get().destinationDirectory.get().asFile
 
-        from(shadowJar.get().archiveFile)
+        from(sourceJar.get().archiveFile)
         rename { modrinthFileName }
         into(libsFile)
 
@@ -91,6 +101,10 @@ tasks {
     // Readme sync
     modrinth.get().dependsOn(tasks.modrinthSyncBody)
     modrinth.get().dependsOn(tasks.getByName("renameTask"))
+
+    build {
+        dependsOn(tasks.getByName("mergeShadowAndJarJar"))
+    }
 }
 
 afterEvaluate {

@@ -43,12 +43,6 @@ dependencies {
 }
 
 tasks {
-    processResources {
-        from(project(":mod").file("src/main/resources/floodgate.accesswidener")) {
-            into("/assets/")
-        }
-    }
-
     named<Jar>("mergeShadowAndJarJar") {
         from (
             zipTree( shadowJar.map { it.outputs.files.singleFile } ).matching {

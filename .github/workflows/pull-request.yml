@@ -1,0 +1,50 @@
+name: Build Pull Request
+
+on: [ pull_request ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository and submodules
+                # See https://github.com/actions/checkout/commits
+              uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+              with:
+                  submodules: recursive
+
+            - name: Validate Gradle Wrapper
+                # See https://github.com/gradle/wrapper-validation-action/commits
+              uses: gradle/actions/wrapper-validation@db19848a5fa7950289d3668fb053140cf3028d43 # v3.3.2
+
+            - name: Setup Java
+                # See https://github.com/actions/setup-java/commits
+              uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+              with:
+                  java-version: 25
+                  distribution: temurin
+
+            - name: Setup Gradle
+                # See https://github.com/gradle/actions/commits
+              uses: gradle/actions/setup-gradle@db19848a5fa7950289d3668fb053140cf3028d43 # v3.3.2
+              with:
+                  cache-read-only: true
+
+            - name: Build Floodgate-Modded
+              run: ./gradlew build
+
+            - name: Archive artifacts (Floodgate Fabric)
+                # See https://github.com/actions/upload-artifact/commits
+              uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+              if: success()
+              with:
+                  name: Floodgate Fabric
+                  path: fabric/build/libs/floodgate-fabric.jar
+                  if-no-files-found: error
+
+            - name: Archive artifacts (Floodgate NeoForge)
+              uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+              if: success()
+              with:
+                  name: Floodgate NeoForge
+                  path: neoforge/build/libs/floodgate-neoforge.jar
+                  if-no-files-found: error

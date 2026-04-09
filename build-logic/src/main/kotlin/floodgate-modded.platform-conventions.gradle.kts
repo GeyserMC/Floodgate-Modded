@@ -30,6 +30,12 @@ loom {
     silentMojangMappingsLicense()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 configurations {
     create("includeTransitive").isTransitive = true
 }

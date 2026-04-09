@@ -8,7 +8,7 @@ val platforms = setOf(
     projects.fabric,
     projects.neoforge,
     projects.mod
-).map { it.dependencyProject }
+).map { project.project(it.path) }
 
 subprojects {
     apply {

@@ -6,15 +6,16 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         maven("https://repo.opencollab.dev/main/")
-        maven("https://jitpack.io") {
-            content {
-                includeGroupByRegex("com\\.github\\..*")
-            }
-        }
+//        maven("https://jitpack.io") {
+//            content {
+//                includeGroupByRegex("com\\.github\\..*")
+//            }
+//        }
 
         maven("https://maven.architectury.dev/")
         maven("https://maven.neoforged.net/releases")
         maven("https://maven.fabricmc.net/")
+        maven("https://jitpack.io/")
     }
 
     plugins {
@@ -32,3 +33,8 @@ rootProject.name = "floodgate-modded"
 include(":mod")
 include(":fabric")
 include(":neoforge")
+
+// Allow to download JVMs for toolchains
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version ("1.0.0")
+}

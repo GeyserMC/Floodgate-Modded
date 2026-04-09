@@ -33,7 +33,8 @@ geyser-mod = { group = "org.geysermc.geyser", name = "mod", version.ref = "geyse
 geyser-core = { group = "org.geysermc.geyser", name = "core", version.ref = "geyser" }
 indra = { group = "net.kyori", name  = "indra-common", version.ref = "indra" }
 shadow = { group = "com.gradleup.shadow", name = "com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
-architectury-plugin = { group = "architectury-plugin", name = "architectury-plugin.gradle.plugin", version.ref = "architectury-plugin" }
+# architectury-plugin = { group = "architectury-plugin", name = "architectury-plugin.gradle.plugin", version.ref = "architectury-plugin" }
+architectury-plugin = { group = "dev.kastle.architectury-plugin", name = "architectury-plugin.gradle.plugin", version = "5ffb79eb20" }
 architectury-loom = { group = "dev.architectury.loom-no-remap", name = "dev.architectury.loom-no-remap.gradle.plugin", version.ref = "architectury-loom" }
 guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
 bstats = { group = "org.bstats", name = "bstats-base", version.ref = "bstats" }

@@ -1,0 +1,38 @@
+name: Build Remote
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        required: true
+        description: 'The repo of the remote'
+        type: string
+      ref:
+        required: true
+        description: 'The ref of the remote'
+        type: string
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Gradle
+        uses: GeyserMC/actions/setup-gradle-composite@master
+        with:
+          checkout_repository: ${{ inputs.repository }}
+          checkout_ref: ${{ inputs.ref }}
+          setup-java_java-version: 25
+          setup-gradle_cache-read-only: true
+
+      - name: Build Floodgate-Modded
+        run: ./gradlew build
+
+      - name: Archive Artifacts
+        uses: GeyserMC/actions/upload-multi-artifact@master
+        if: success()
+        with:
+            artifacts: |
+                Floodgate-Fabric:fabric/build/libs/floodgate-fabric.jar
+                Floodgate-NeoForge:neoforge/build/libs/floodgate-neoforge.jar

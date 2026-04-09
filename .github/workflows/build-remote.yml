@@ -21,8 +21,6 @@ jobs:
       - name: Setup Gradle
         uses: GeyserMC/actions/setup-gradle-composite@master
         with:
-          checkout_repository: ${{ inputs.repository }}
-          checkout_ref: ${{ inputs.ref }}
           setup-java_java-version: 25
           setup-gradle_cache-read-only: true
 

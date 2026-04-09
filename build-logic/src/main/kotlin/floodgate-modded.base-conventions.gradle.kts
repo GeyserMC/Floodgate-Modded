@@ -27,7 +27,7 @@ tasks {
                 "id" to "floodgate",
                 "name" to "Floodgate",
                 "version" to project.version,
-                "description" to project.description as String,
+                "description" to project.description.orEmpty(),
                 "url" to "https://geysermc.org",
                 "author" to "GeyserMC",
                 "minecraft_version" to libs.versions.minecraft.version.get()

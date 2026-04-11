@@ -6,3 +6,4 @@ accessible method net/minecraft/server/network/ServerLoginPacketListenerImpl sta
 accessible class net/minecraft/server/level/ChunkMap$TrackedEntity
 # To access skins
 accessible field net/minecraft/world/entity/Entity level Lnet/minecraft/world/level/Level;
+

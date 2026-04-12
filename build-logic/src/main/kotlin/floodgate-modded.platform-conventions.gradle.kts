@@ -139,6 +139,6 @@ modrinth {
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
     uploadFile.set(project.layout.buildDirectory.file("libs/${versionName(project)}.jar"))
-    gameVersions.addAll(libs.minecraft.get().version as String)
+    gameVersions.addAll(libs.minecraft.get().version as String, "26.1.1", "26.1.2")
     failSilently.set(false)
 }

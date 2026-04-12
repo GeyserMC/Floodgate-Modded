@@ -129,16 +129,16 @@ afterEvaluate {
 }
 
 modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN")) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    token.set(System.getenv("MODRINTH_TOKEN") ?: "") // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    debugMode.set(System.getenv("MODRINTH_TOKEN") == null)
     projectId.set("bWrNNfkb")
     versionName.set(versionName(project))
     versionNumber.set(projectVersion(project))
     versionType.set("release")
     changelog.set("A changelog can be found at https://github.com/GeyserMC/Floodgate-Modded/commits")
-
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    uploadFile.set(tasks.shadowJar.get().destinationDirectory.get().asFile.resolve("${versionName(project)}.jar"))
+    uploadFile.set(project.layout.buildDirectory.file("libs/${versionName(project)}.jar"))
     gameVersions.addAll(libs.minecraft.get().version as String)
     failSilently.set(false)
 }

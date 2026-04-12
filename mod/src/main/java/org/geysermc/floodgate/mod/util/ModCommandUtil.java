@@ -83,7 +83,7 @@ public final class ModCommandUtil extends CommandUtil {
         CommandSourceStack commandSource = (CommandSourceStack) target;
         if (commandSource.getEntity() instanceof ServerPlayer) {
             MinecraftServerHolder.get().execute(() -> ((ServerPlayer) commandSource.getEntity())
-                    .displayClientMessage(Component.literal(message), false));
+                    .sendSystemMessage(Component.literal(message), false));
         } else {
             // Console?
             logger.info(message);

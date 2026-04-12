@@ -1,7 +1,7 @@
 plugins {
     id("floodgate-modded.publish-conventions")
     id("architectury-plugin")
-    id("dev.architectury.loom")
+    id("dev.architectury.loom-no-remap")
     id("com.modrinth.minotaur")
 }
 
@@ -30,19 +30,12 @@ loom {
     silentMojangMappingsLicense()
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
 configurations {
     create("includeTransitive").isTransitive = true
 }
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.officialMojangMappings())
 
     // These are under our own namespace
     shadow(libs.floodgate.api) { isTransitive = false }
@@ -71,31 +64,34 @@ tasks {
     shadowJar {
         // Mirrors the example fabric project, otherwise tons of dependencies are shaded that shouldn't be
         configurations = listOf(project.configurations.shadow.get())
+        archiveBaseName.set("${project.name}-shaded")
+        mergeServiceFiles()
 
         // Relocate these
         relocate("org.bstats", "org.geysermc.floodgate.shadow.bstats")
         relocate("com.google.inject", "org.geysermc.floodgate.shadow.google.inject")
         relocate("org.yaml", "org.geysermc.floodgate.shadow.org.yaml")
-
-        // The remapped shadowJar is the final desired mod jar
-        archiveVersion.set(project.version.toString())
-        archiveClassifier.set("shaded")
     }
 
-    remapJar {
-        dependsOn(shadowJar)
-        inputFile.set(shadowJar.get().archiveFile)
-        archiveClassifier.set("")
+    // This task combines the output of the "jar" task, which includes JiJ dependencies,
+    // and the shadowJar for the final jar.
+    // thanks bluemap
+    // https://github.com/BlueMap-Minecraft/BlueMap/blob/cfe73115dc4d1bdd97bc659f41364da65a6a2179/implementations/fabric/build.gradle.kts#L93-L107
+    register<Jar>("mergeShadowAndJarJar") {
+        dependsOn( tasks.shadowJar, tasks.jar )
+        // from sources / final name are configured in the respective projects
         archiveVersion.set("")
+        archiveClassifier.set("")
     }
 
-    register<Copy>("renameTask") {
-        dependsOn(remapJar)
+    tasks.register<Copy>("renameTask") {
+        val sourceJar = tasks.named<Jar>("mergeShadowAndJarJar")
+        dependsOn(sourceJar)
 
         val modrinthFileName = "${versionName(project)}.jar"
-        val libsFile = remapJar.get().destinationDirectory.get().asFile
+        val libsFile = sourceJar.get().destinationDirectory.get().asFile
 
-        from(remapJar.get().archiveFile)
+        from(sourceJar.get().archiveFile)
         rename { modrinthFileName }
         into(libsFile)
 
@@ -105,6 +101,10 @@ tasks {
     // Readme sync
     modrinth.get().dependsOn(tasks.modrinthSyncBody)
     modrinth.get().dependsOn(tasks.getByName("renameTask"))
+
+    build {
+        dependsOn(tasks.getByName("mergeShadowAndJarJar"))
+    }
 }
 
 afterEvaluate {
@@ -129,16 +129,16 @@ afterEvaluate {
 }
 
 modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN")) // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    token.set(System.getenv("MODRINTH_TOKEN") ?: "") // Even though this is the default value, apparently this prevents GitHub Actions caching the token?
+    debugMode.set(System.getenv("MODRINTH_TOKEN") == null)
     projectId.set("bWrNNfkb")
     versionName.set(versionName(project))
     versionNumber.set(projectVersion(project))
     versionType.set("release")
     changelog.set("A changelog can be found at https://github.com/GeyserMC/Floodgate-Modded/commits")
-
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    uploadFile.set(tasks.remapJar.get().destinationDirectory.get().asFile.resolve("${versionName(project)}.jar"))
-    gameVersions.addAll(libs.minecraft.get().version as String)
+    uploadFile.set(project.layout.buildDirectory.file("libs/${versionName(project)}.jar"))
+    gameVersions.addAll(libs.minecraft.get().version as String, "26.1.1", "26.1.2")
     failSilently.set(false)
 }

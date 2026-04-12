@@ -29,7 +29,7 @@ dependencies {
 
     neoForge(libs.neoforge)
     // "namedElements" configuration should be used to depend on different loom projects
-    common(project(":mod", configuration = "namedElements")) { isTransitive = false }
+    common(project(":mod")) { isTransitive = false }
     // Bundle transformed classes of the common module for production mod jar
     shadow(project(path = ":mod", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
@@ -38,20 +38,23 @@ dependencies {
     implementation(libs.floodgate.core)
     implementation(libs.guice)
 
-    modImplementation(libs.cloud.neoforge)
+    implementation(libs.cloud.neoforge)
     include(libs.cloud.neoforge)
 }
 
 tasks {
-    processResources {
-        from(project(":mod").file("src/main/resources/floodgate.accesswidener")) {
-            into("/assets/")
-        }
-    }
-
-    remapJar {
+    named<Jar>("mergeShadowAndJarJar") {
+        from (
+            zipTree( shadowJar.map { it.outputs.files.singleFile } ).matching {
+                exclude("LICENSE")
+            },
+            zipTree( jar.map { it.outputs.files.singleFile } ).matching {
+                include("META-INF/jars/**")
+                include("META-INF/jarjar/**")
+                include("LICENSE")
+            }
+        )
         dependsOn(processResources)
-        atAccessWideners.add("floodgate.accesswidener")
         archiveBaseName.set("floodgate-neoforge")
     }
 

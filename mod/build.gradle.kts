@@ -3,8 +3,7 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/floodgate.accesswidener")
-    mixin.defaultRefmapName.set("floodgate-refmap.json")
+    accessWidenerPath = file("src/main/resources/floodgate.classtweaker")
 }
 
 dependencies {
@@ -14,8 +13,8 @@ dependencies {
 
     compileOnly(libs.mixin)
     compileOnly(libs.asm)
-    modCompileOnly(libs.geyser.mod) { isTransitive = false }
-    modCompileOnly(libs.geyser.core) { isTransitive = false }
+    compileOnly(libs.geyser.mod) { isTransitive = false }
+    compileOnly(libs.geyser.core) { isTransitive = false }
 
     // Only here to suppress "unknown enum constant EnvType.CLIENT" warnings.
     compileOnly(libs.fabric.loader)
@@ -28,6 +27,10 @@ afterEvaluate {
     }
 
     tasks.named("modrinth").configure {
+        enabled = false
+    }
+
+    tasks.named("mergeShadowAndJarJar").configure {
         enabled = false
     }
 }

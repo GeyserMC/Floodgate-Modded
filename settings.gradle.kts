@@ -6,16 +6,15 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         maven("https://repo.opencollab.dev/main/")
-//        maven("https://jitpack.io") {
-//            content {
-//                includeGroupByRegex("com\\.github\\..*")
-//            }
-//        }
+        maven("https://jitpack.io") {
+            content {
+                includeGroupByRegex("com\\.github\\..*")
+            }
+        }
 
         maven("https://maven.architectury.dev/")
         maven("https://maven.neoforged.net/releases")
         maven("https://maven.fabricmc.net/")
-        maven("https://jitpack.io/")
     }
 
     plugins {

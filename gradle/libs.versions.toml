@@ -14,7 +14,7 @@ bstats = "3.0.2"
 configutils = "1.0-SNAPSHOT"
 mixin = "0.8.5"
 asm = "5.2"
-floodgate = "core-repackage-2.2.3-SNAPSHOT"
+floodgate = "core-repackage-2.2.5-SNAPSHOT"
 
 # fabric
 fabric-loader = "0.18.2"

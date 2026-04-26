@@ -3,6 +3,7 @@ package org.geysermc.floodgate.platform.fabric.module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.core.platform.listener.ListenerRegistration;
 import org.geysermc.floodgate.core.platform.pluginmessage.PluginMessageUtils;
 import org.geysermc.floodgate.core.pluginmessage.PluginMessageRegistration;
@@ -28,8 +29,8 @@ public class FabricPlatformModule extends ModPlatformModule {
 
     @Provides
     @Singleton
-    public PluginMessageRegistration pluginMessageRegister() {
-        return new FabricPluginMessageRegistration();
+    public PluginMessageRegistration pluginMessageRegister(FloodgateApi api) {
+        return new FabricPluginMessageRegistration(api);
     }
 
     @Provides

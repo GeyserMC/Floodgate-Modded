@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
+import org.geysermc.floodgate.core.event.EventBus;
 import org.geysermc.floodgate.core.inject.CommonPlatformInjector;
 import org.geysermc.floodgate.core.platform.command.CommandUtil;
 import org.geysermc.floodgate.core.platform.util.PlatformUtils;
@@ -71,7 +72,7 @@ public abstract class ModPlatformModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public SkinApplier skinApplier() {
-        return new ModSkinApplier();
+    public SkinApplier skinApplier(EventBus eventBus) {
+        return new ModSkinApplier(eventBus);
     }
 }

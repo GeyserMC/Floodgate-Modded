@@ -12,6 +12,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.mod.FloodgateMod;
@@ -23,6 +24,8 @@ import org.geysermc.floodgate.platform.neoforge.util.TaskTimer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.Objects;
 
 @Mod("floodgate")
@@ -70,6 +73,12 @@ public final class NeoForgeFloodgateMod extends FloodgateMod {
 
         // We can now trigger the registering of our plugin message channels
         enable(new PluginMessageModule());
+    }
+
+    @Override
+    public @Nullable URL resourceUrl(String file) throws IOException {
+        URI uri = container.getModInfo().getOwningFile().getFile().getContents().findFile(file).orElse(null);
+        return uri == null ? null : uri.toURL();
     }
 
     @Override

@@ -33,7 +33,6 @@ dependencies {
 
     implementation(libs.cloud.fabric)
     include(libs.cloud.fabric)
-    include(libs.fabric.permissions.api)
 }
 
 tasks {

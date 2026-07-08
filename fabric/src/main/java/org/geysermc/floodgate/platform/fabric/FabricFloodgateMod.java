@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.core.module.PluginMessageModule;
 import org.geysermc.floodgate.core.module.ServerCommonModule;
 import org.geysermc.floodgate.mod.FloodgateMod;
@@ -17,6 +18,7 @@ import org.geysermc.floodgate.platform.fabric.util.TaskTimer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -45,6 +47,12 @@ public final class FabricFloodgateMod extends FloodgateMod implements ModInitial
             ServerLifecycleEvents.SERVER_STOPPING.register($ -> this.disable());
         }
         TaskTimer.register();
+    }
+
+    @Override
+    public @Nullable URL resourceUrl(String file) throws IOException {
+        Path path = container.findPath(file).orElse(null);
+        return path == null ? null : path.toUri().toURL();
     }
 
     @Override

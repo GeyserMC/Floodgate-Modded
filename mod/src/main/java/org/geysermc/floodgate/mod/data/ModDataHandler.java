@@ -1,7 +1,7 @@
 package org.geysermc.floodgate.mod.data;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.minecraft.SessionService;
 import com.mojang.logging.LogUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -135,7 +135,7 @@ public final class ModDataHandler extends CommonDataHandler {
             public void run() {
                 GameProfile effectiveProfile = gameProfile;
                 try {
-                    MinecraftSessionService service = MinecraftServerHolder.get().services().sessionService();
+                    SessionService service = MinecraftServerHolder.get().services().sessionService();
                     effectiveProfile = Objects.requireNonNull(service.fetchProfile(effectiveProfile.id(), true)).profile();
                 } catch (Exception e) {
                     LOGGER.error("Unable to get Bedrock linked player textures for " + effectiveProfile.name(), e);
